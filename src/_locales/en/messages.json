@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "Ext Starter",
+    "message": "YNAB Exporter",
     "description": "The name of the extension."
   },
   "appDescription": {
-    "message": "Boilerplate for building cross browser extensions",
+    "message": "A browser extension to export tabular data to YNAB CSV",
     "description": "The description of the extension."
   },
   "btnTooltip": {
-    "message": "Ext Starter",
+    "message": "YNAB Exporter",
     "description": "Tooltip for the button."
   }
 }
