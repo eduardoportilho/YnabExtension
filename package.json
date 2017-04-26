@@ -1,5 +1,5 @@
 {
-  "name": "YNAB exporter extension",
+  "name": "ynab-exporter",
   "version": "0.0.1",
   "description": "A browser extension to export tabular data to YNAB CSV",
   "scripts": {
