@@ -5,13 +5,39 @@
 
 import ext from "./utils/ext";
 
-ext.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if(request.action === "perform-save") {
-      console.log("Extension Type: ", "/* @echo extension */");
-      console.log("PERFORM AJAX", request.data);
+chrome.contextMenus.create({
+  "title": "Export to YNAB CSV",
+  "contexts":["selection"],
+  "onclick": ynabExportSelection
+});
 
-      sendResponse({ action: "saved" });
-    }
-  }
-);
+/**
+ * Context menu selection click.
+ * 
+ * @param  {Object} info - Information about the item clicked and the context where the click happened.
+ * @param  {integer|string} info.menuItemId - The ID of the menu item that was clicked.
+ * @param  {integer|string} [info.parentMenuItemId] - The parent ID, if any, for the item clicked.
+ * @param  {string} [info.mediaType] - One of 'image', 'video', or 'audio' if the context menu was activated on one of these types of elements.
+ * @param  {string} [info.linkUrl] - If the element is a link, the URL it points to.
+ * @param  {string} [info.srcUrl] - Will be present for elements with a 'src' URL.
+ * @param  {string} [info.pageUrl] - The URL of the page where the menu item was clicked. This property is not set if the click occured in a context where there is no current page, such as in a launcher context menu.
+ * @param  {string} [info.frameUrl] - The URL of the frame of the element where the context menu was clicked, if it was in a frame.
+ * @param  {integer} [info.frameId] - The ID of the frame of the element where the context menu was clicked, if it was in a frame.
+ * @param  {string} [info.selectionText] - The text for the context selection, if any.
+ * @param  {boolean} [info.editable] - A flag indicating whether the element is editable (text input, textarea, etc.).
+ * @param  {boolean} [info.wasChecked] - A flag indicating the state of a checkbox or radio item before it was clicked.
+ * @param  {boolean} [info.checked] - A flag indicating the state of a checkbox or radio item after it is clicked.
+ * @param  {tabs.Tab} tab - The details of the tab where the click took place. Note: this parameter only present for extensions.
+ * @param  {integer} [tab.id] - The ID of the tab. Tab IDs are unique within a browser session. Under some circumstances a Tab may not be assigned an ID, for example when querying foreign tabs using the sessions API, in which case a session ID may be present. Tab ID can also be set to chrome.tabs.TAB_ID_NONE for apps and devtools windows.
+ * @param  {integer} tab.index - The zero-based index of the tab within its window.
+ * @param  {boolean} tab.active - Whether the tab is active in its window. (Does not necessarily mean the window is focused.)
+ * @param  {integer} tab.windowId - The ID of the window the tab is contained within.
+ *
+ * @see  https://developer.chrome.com/extensions/contextMenus#property-createProperties-onclick
+ */
+function ynabExportSelection(info, tab) {
+  ext.tabs.sendMessage(tab.id, {
+    'action': 'ynabExportSelection',
+    'selectionText': info.selectionText
+  });
+};
