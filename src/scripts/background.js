@@ -38,6 +38,8 @@ chrome.contextMenus.create({
 function ynabExportSelection(info, tab) {
   ext.tabs.sendMessage(tab.id, {
     'action': 'ynabExportSelection',
-    'selectionText': info.selectionText
+    'data': {
+      'selectionText': info.selectionText
+    }
   });
 };
