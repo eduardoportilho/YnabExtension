@@ -1,3 +1,8 @@
+/**
+ * A common need for extensions is to have a single long-running
+ * script to manage some task or state. Background pages to the rescue.
+ */
+
 import ext from "./utils/ext";
 
 ext.runtime.onMessage.addListener(
