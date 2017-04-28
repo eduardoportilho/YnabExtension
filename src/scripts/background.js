@@ -3,13 +3,13 @@
  * script to manage some task or state. Background pages to the rescue.
  */
 
-import ext from "./utils/ext";
+import ext from "./utils/ext"
 
 chrome.contextMenus.create({
   "title": "Export to YNAB",
   "contexts":["selection"],
   "onclick": ynabExportSelection
-});
+})
 
 /**
  * Context menu selection click.
@@ -41,5 +41,5 @@ function ynabExportSelection(info, tab) {
     'data': {
       'selectionText': info.selectionText
     }
-  });
-};
+  })
+}
