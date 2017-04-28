@@ -17,7 +17,7 @@ import ynabExporter from "./ynab/exporter"
  * @param  {string} [selectionInfo.selectionText] - Text selection
  */
 var ynabExportSelection = (selectionInfo) => {
-  var selectedElements = selection.getSelectedElements()
+  var selectedElements = selection.getSelectedElements(window)
   try {
     var ynabCsvString = ynabExporter.generateCsv(selectedElements)
     download.createTextFileForDownload(ynabCsvString, 'text/csv')
