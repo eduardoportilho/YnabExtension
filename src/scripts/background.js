@@ -6,7 +6,7 @@
 import ext from "./utils/ext";
 
 chrome.contextMenus.create({
-  "title": "Export to YNAB CSV",
+  "title": "Export to YNAB",
   "contexts":["selection"],
   "onclick": ynabExportSelection
 });
