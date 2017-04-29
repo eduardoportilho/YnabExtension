@@ -1,7 +1,7 @@
-import tabular from "./utils/tabular-data"
-import columnFinder from "./ynab/column-finder"
-import transactionFactory from "./ynab/transaction-factory"
-import csvBuilder from "./ynab/csv-builder"
+import tabular from "../utils/tabular-data"
+import columnFinder from "./column-finder"
+import transactionFactory from "./transaction-factory"
+import csvBuilder from "./csv-builder"
 
 
 module.exports = {
