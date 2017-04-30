@@ -61,7 +61,6 @@ describe("tabular-data", function() {
       expect(() => {
         tabular.getTabularDataFromSelection(domSelectionRange)
       }).to.throw('Could not find tabular data.')
-
     })
   })
 
@@ -144,6 +143,16 @@ describe("tabular-data", function() {
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
     })
+
+    it("should throw when table not found", function() {
+      var domSelectionRange = {
+        start: $('#db1').get(),
+        end: $('#db1').get()
+      }
+      expect(() => {
+        tabular._getTableDataFromSelection(domSelectionRange)
+      }).to.throw('Could not find tabular data.')
+    })
   })
 
   describe("getHeaderDataFromSelection", function() {
@@ -175,6 +184,26 @@ describe("tabular-data", function() {
       }
       expect(tabular._getHeaderDataFromSelection(domSelectionRange))
         .to.deep.equal(['Col XA','Col XB','Col XC'])
+    })
+
+    it("should return undefined when table not found", function() {
+      var domSelectionRange = {
+        start: $('#db1').get(),
+        end: $('#db1').get()
+      }
+      expect(tabular._getHeaderDataFromSelection(domSelectionRange)).to.be.undefined
+    })
+
+
+    it("should return undefined on empty table", function() {
+      document.body.innerHTML = '<table>' +
+        '<thead id="d1"></thead>' +
+      '</table>'
+      var domSelectionRange = {
+        start: $('#d1').get(),
+        end: $('#d1').get()
+      }
+      expect(tabular._getHeaderDataFromSelection(domSelectionRange)).to.be.undefined
     })
   })
 })
