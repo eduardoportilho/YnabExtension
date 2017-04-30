@@ -14,7 +14,7 @@ module.exports = {
   generateCsv: (domSelectionRange) => {
     var tabularData = tabular.getTabularDataFromSelection(domSelectionRange)
 
-    var columnInfo = columnFinder.getColumnInfo(tabularData)
+    var columnInfo = columnFinder.getColumnInfo(tabularData, domSelectionRange)
 
     var transactions = transactionFactory.createTransactions(tabularData, columnInfo)
 
