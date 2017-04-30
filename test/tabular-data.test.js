@@ -68,4 +68,42 @@ describe("tabular-data", function() {
       expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.false
     })
   })
+
+  describe("getTableDataFromSelection", function() {
+    it("should get data from parent rows", function() {
+      var domSelectionRange = {
+        start: $('#td1c').get(),
+        end: $('#td2b').get()
+      }
+      expect(tabular._getTableDataFromSelection(domSelectionRange))
+        .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
+    })
+
+    it("should get data from row selection", function() {
+      var domSelectionRange = {
+        start: $('#tr2').get(),
+        end: $('#tr3').get()
+      }
+      expect(tabular._getTableDataFromSelection(domSelectionRange))
+        .to.deep.equal([['2A','2B','2C'],['3A','3B','3C']])
+    })
+
+    it("should get data from inverted selection", function() {
+      var domSelectionRange = {
+        start: $('#td2b').get(),
+        end: $('#td1c').get()
+      }
+      expect(tabular._getTableDataFromSelection(domSelectionRange))
+        .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
+    })
+
+    it("should get data from partial selection", function() {
+      var domSelectionRange = {
+        start: $('#td2b').get(),
+        end: $('#d3').get()
+      }
+      expect(tabular._getTableDataFromSelection(domSelectionRange))
+        .to.deep.equal([['2A','2B','2C'],['3A','3B','3C']])
+    })
+  })
 })
