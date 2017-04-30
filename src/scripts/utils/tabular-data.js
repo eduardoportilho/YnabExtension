@@ -105,7 +105,7 @@ function getHeaderDataFromSelection(domSelectionRange) {
       // only 1st th row
       var headerCols = th.first().parent().find('th')
       var headerVals = headerCols.map(function(i, el){
-          return jQuery(el).text()
+          return $(el).text()
       }).get()
       return headerVals
     }
@@ -117,10 +117,10 @@ function getHeaderDataFromSelection(domSelectionRange) {
         .find('td')
         .filter(function(i,td) {
           //ignore td with children
-          return jQuery(td).children().length === 0
+          return $(td).children().length === 0
         })
       var headerVals = headerCols.map(function (i, el) {
-          return jQuery(el).text()
+          return $(el).text()
       }).get()
       return headerVals
     }
@@ -132,4 +132,5 @@ module.exports = {
   //private methods exposed for testing only
   _isSelectionInsideTable: isSelectionInsideTable,
   _getTableDataFromSelection: getTableDataFromSelection,
+  _getHeaderDataFromSelection: getHeaderDataFromSelection,
 }

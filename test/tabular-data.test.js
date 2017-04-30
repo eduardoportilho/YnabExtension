@@ -120,4 +120,36 @@ describe("tabular-data", function() {
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
     })
   })
+
+  describe("getHeaderDataFromSelection", function() {
+    it("should find th headers", function() {
+      var domSelectionRange = {
+        start: $('#td1c').get(),
+        end: $('#td2b').get()
+      }
+      expect(tabular._getHeaderDataFromSelection(domSelectionRange))
+        .to.deep.equal(['Col A','Col B','Col C'])
+    })
+
+    it("if there are no ths, should find td headers", function() {
+      document.body.innerHTML = '<table>' +
+      '<tr>' +
+        '<td>Col XA</td>' +
+        '<td>Col XB</td>' +
+        '<td>Col XC</td>' +
+      '</tr>' +
+      '<tr id="tr1">' +
+        '<td id="td1a">1A</td>' +
+        '<td id="td1b">1B</td>' +
+        '<td id="td1c">1C</td>' +
+      '</tr>' +
+    '</table>'
+      var domSelectionRange = {
+        start: $('#td1a').get(),
+        end: $('#td1a').get()
+      }
+      expect(tabular._getHeaderDataFromSelection(domSelectionRange))
+        .to.deep.equal(['Col XA','Col XB','Col XC'])
+    })
+  })
 })
