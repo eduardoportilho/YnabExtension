@@ -40,6 +40,31 @@ describe("tabular-data", function() {
     '</div>' 
   })
 
+  describe("getTabularDataFromSelection", function() {
+    it("should get tabular data", function() {
+      var domSelectionRange = {
+        start: $('#td1a').get(),
+        end: $('#td3c').get()
+      }
+      expect(tabular.getTabularDataFromSelection(domSelectionRange))
+        .to.deep.equal({
+          'data': [['1A','1B','1C'],['2A','2B','2C'],['3A','3B','3C']],
+          'header': ['Col A','Col B','Col C']
+        })
+    })
+
+    it("should throw when data not found", function() {
+      var domSelectionRange = {
+        start: $('#db1').get(),
+        end: $('#db1').get()
+      }
+      expect(() => {
+        tabular.getTabularDataFromSelection(domSelectionRange)
+      }).to.throw('Could not find tabular data.')
+
+    })
+  })
+
   describe("isSelectionInsideTable", function() {
     it("selection should be inside the table", function() {
       var domSelectionRange = {
