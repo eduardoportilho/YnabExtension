@@ -33,7 +33,7 @@ function isSelectionInsideTable(domSelectionRange) {
   var elStart = $(domSelectionRange.start)
   var elEnd = $(domSelectionRange.end)
   return (elStart.is('tr') || elStart.closest('tr').length > 0) &&
-         (elEnd.is('tr') || elEnd.closest('tr').length > 0)
+    (elEnd.is('tr') || elEnd.closest('tr').length > 0)
 }
 
 /**
@@ -42,26 +42,46 @@ function isSelectionInsideTable(domSelectionRange) {
  * @return {string[][]} Tabular data.
  */
 function getTableDataFromSelection(domSelectionRange) {
-    var rowA = $(domSelectionRange.start).closest('tr')
-    var rowB = $(domSelectionRange.end).closest('tr')
 
-    var indexA = rowA.index()
-    var indexB = rowB.index()
+  var table = $(domSelectionRange.start).closest('table')
+  if (table.length <= 0) {
+    table = $(domSelectionRange.end).closest('table')
+  }
+  if (table.length <= 0) {
+    throw Error('Could not find tabular data.')
+  }
 
-    var row = (indexA <= indexB) ? rowA : rowB
-    var lastRowIndex = (indexB > indexA) ? indexB : indexA
+  var startRow = $(domSelectionRange.start).closest('tr')
+  if (startRow.length <= 0) {
+    //ignore <tr><th>...
+    startRow = table.find('tr td').first().parent()
+  }
 
-    var rows = [], rowContent
-    while(row.length > 0 && row.index() <= lastRowIndex) {
-        rowContent = []
+  var endRow = $(domSelectionRange.end).closest('tr')
+  if (endRow.length <= 0) {
+    endRow = table.find('tr').last()
+  }
 
-        row.find('td').each(function(idx, el) {
-            rowContent.push($(el).text().trim())
-        })
-        rows.push(rowContent)
-        row = row.next()
-    }
-    return rows
+  if (startRow.index() > endRow.index()) {
+    var temp = startRow
+    startRow = endRow
+    endRow = temp
+  }
+
+  var row = startRow
+  var lastRowIndex = endRow.index()
+
+  var rows = [], rowContent
+  while(row.length > 0 && row.index() <= lastRowIndex) {
+      rowContent = []
+
+      row.find('td').each(function(idx, el) {
+          rowContent.push($(el).text().trim())
+      })
+      rows.push(rowContent)
+      row = row.next()
+  }
+  return rows
 }
 
 /**

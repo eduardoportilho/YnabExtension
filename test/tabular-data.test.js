@@ -6,7 +6,12 @@ import $ from 'jquery'
 describe("tabular-data", function() {
 
   before(function () {
-    document.body.innerHTML = '<table>' +
+    document.body.innerHTML = '<div>' + 
+      '<div id="da1">Div A1</div>' + 
+      '<div id="da2">Div A2</div>' + 
+      '<div id="da3">Div A3</div>' + 
+    '</div>'+
+    '<table>' +
       '<tr>' +
         '<th>Col A</th>' +
         '<th>Col B</th>' +
@@ -29,9 +34,9 @@ describe("tabular-data", function() {
       '</tr>' +
     '</table>' + 
     '<div>' + 
-      '<div id="d1">Div 1</div>' + 
-      '<div id="d2">Div 2</div>' + 
-      '<div id="d3">Div 3</div>' + 
+      '<div id="db1">Div B1</div>' + 
+      '<div id="db2">Div B2</div>' + 
+      '<div id="db3">Div B3</div>' + 
     '</div>' 
   })
 
@@ -54,8 +59,8 @@ describe("tabular-data", function() {
 
     it("selection should be outside the table", function() {
       var domSelectionRange = {
-        start: $('#d1').get(),
-        end: $('#d3').get()
+        start: $('#db1').get(),
+        end: $('#db3').get()
       }
       expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.false
     })
@@ -63,7 +68,7 @@ describe("tabular-data", function() {
     it("partial selection should be outside the table", function() {
       var domSelectionRange = {
         start: $('#td3b').get(),
-        end: $('#d3').get()
+        end: $('#db3').get()
       }
       expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.false
     })
@@ -97,13 +102,22 @@ describe("tabular-data", function() {
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
     })
 
-    it("should get data from partial selection", function() {
+    it("should get data from partial selection (end outside table)", function() {
       var domSelectionRange = {
         start: $('#td2b').get(),
-        end: $('#d3').get()
+        end: $('#db3').get()
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['2A','2B','2C'],['3A','3B','3C']])
+    })
+
+    it("should get data from partial selection (start outside table)", function() {
+      var domSelectionRange = {
+        start: $('#da1').get(),
+        end: $('#td2b').get()
+      }
+      expect(tabular._getTableDataFromSelection(domSelectionRange))
+        .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
     })
   })
 })
