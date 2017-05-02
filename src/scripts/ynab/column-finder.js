@@ -1,15 +1,17 @@
 /**
  * @typedef {ColumnInfo} Description of the columns of tabular data.
- * @property {} name - description.
+ * @property {number} dateIndex - Date index.
+ * @property {number} payeeIndex - Payee index.
+ * @property {number} inflowIndex - Inflow index.
  */
 
 /**
  * Map a [header type] to an [array of possible header labels].
  */
 let POSSIBLE_HEADER_LABELS = {
-  date: ['datum', 'date', 'data'],
-  payee: ['mottagare', 'transaktion', 'payee', 'descrição', 'histórico', 'lançamento'],
-  inflow: ['belopp', 'belopp sek', 'inflow', 'value', 'valor']
+  dateIndex: ['datum', 'date', 'data'],
+  payeeIndex: ['mottagare', 'transaktion', 'payee', 'descrição', 'histórico', 'lançamento'],
+  inflowIndex: ['belopp', 'belopp sek', 'inflow', 'value', 'valor']
 }
 
 /**
@@ -18,45 +20,52 @@ let POSSIBLE_HEADER_LABELS = {
  * @return {ColumnInfo} Column information.
  */
 function getColumnInfo(tabularData, domSelectionRange) {
-  var headerTypeIndexes;
+  var columnInfo;
   //1: try using the table header
   if (tabularData.header) {
-    headerTypeIndexes = findIndexesFromHeader(tabularData.header)
-    // if (isValid(headerTypeIndexes)) { return headerTypeIndexes }
+    columnInfo = findIndexesFromHeader(tabularData.header)
+    // if (isValid(columnInfo)) { return columnInfo }
   }
 
   // 2: try using the table values
-  headerTypeIndexes = findIndexesFromValues(tabularData.data)
-  // if (isValid(headerTypeIndexes)) { return headerTypeIndexes }
+  columnInfo = findIndexesFromValues(tabularData.data)
+  // if (isValid(columnInfo)) { return columnInfo }
   // 
   throw Error('Could not find column information.')
 }
 
 /**
  * Find the index of each header type based on the header labels.
- * 
- * Tenta descobrir ordem das colunas a partir dos valores do header
- * @param headerLabels string array, valores do header
- * @returns {*} optional: object[headerType] = index
+ * @param {string[]} tableHeaderLabels - Labels on the table headers.
+ * @return {ColumnInfo} Column information.
  */
-function findIndexesFromHeader(headerLabels) {
-  var columnOrder = {}
+function findIndexesFromHeader(tableHeaderLabels) {
+  var columnInfo = {}
 
   for(var headerType in POSSIBLE_HEADER_LABELS) {
     var possibleHeaderLabels = POSSIBLE_HEADER_LABELS[headerType]
-    var index = findHeaderIndexByLabel(headerLabels, possibleHeaderLabels)
+    var index = findHeaderIndexByLabel(tableHeaderLabels, possibleHeaderLabels)
     if(index >= 0) {
-      columnOrder[headerType] = index
+      columnInfo[headerType] = index
     }
   }
 
-  return columnOrder
+  return columnInfo
 }
 
 /**
- * Given all the table headers, find the index of the header with the label more similar to the provided labels.
- * If two 
- * @param {string[]} tableHeaderLabels - The labels of the headers of the table.
+ * Find the index of each header type based on the table values.
+ * @param {string[]} tableValues - Table values.
+ * @return {ColumnInfo} Column information.
+ */
+function findIndexesFromValues(tableHeaderLabels) {
+  //TODO
+  return {}
+}
+
+/**
+ * Given all the table headers, find the index of the header with the label more similar to the provided labels. 
+ * @param {string[]} tableHeaderLabels - Labels on the table headers.
  * @param {string[]} possibleLabelsForHeader - Possible labels for the searched header (in decrescent order of priority).
  * @return {number|undefined} Index of the header or undefined, if not found.
  * 
@@ -90,6 +99,16 @@ function findHeaderIndexByLabel(tableHeaderLabels, possibleLabelsForHeader) {
     return undefined
   }
   return bestMatch.index
+}
+
+/**
+ * Check if the column info is valid.
+ * @param  {ColumnInfo} Column information.
+ * @return {Boolean}
+ */
+function isValid (columnInfo) {
+  // TODO
+  return false
 }
 
 /**
