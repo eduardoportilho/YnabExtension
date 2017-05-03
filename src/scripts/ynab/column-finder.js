@@ -1,3 +1,5 @@
+import JsTurbo from 'jsturbo'
+
 /**
  * @typedef {ColumnInfo} Description of the columns of tabular data.
  * @property {number} dateIndex - Date index.
@@ -24,13 +26,16 @@ function getColumnInfo(tabularData, domSelectionRange) {
   //1: try using the table header
   if (tabularData.header) {
     columnInfo = findIndexesFromHeader(tabularData.header)
-    // if (isValid(columnInfo)) { return columnInfo }
+    if (isValid(columnInfo)) {
+      return columnInfo
+    }
   }
 
   // 2: try using the table values
   columnInfo = findIndexesFromValues(tabularData.data)
-  // if (isValid(columnInfo)) { return columnInfo }
-  // 
+  if (isValid(columnInfo)) {
+    return columnInfo
+  }
   throw Error('Could not find column information.')
 }
 
@@ -41,7 +46,6 @@ function getColumnInfo(tabularData, domSelectionRange) {
  */
 function findIndexesFromHeader(tableHeaderLabels) {
   var columnInfo = {}
-
   for(var headerType in POSSIBLE_HEADER_LABELS) {
     var possibleHeaderLabels = POSSIBLE_HEADER_LABELS[headerType]
     var index = findHeaderIndexByLabel(tableHeaderLabels, possibleHeaderLabels)
@@ -49,7 +53,6 @@ function findIndexesFromHeader(tableHeaderLabels) {
       columnInfo[headerType] = index
     }
   }
-
   return columnInfo
 }
 
@@ -58,9 +61,32 @@ function findIndexesFromHeader(tableHeaderLabels) {
  * @param {string[]} tableValues - Table values.
  * @return {ColumnInfo} Column information.
  */
-function findIndexesFromValues(tableHeaderLabels) {
-  //TODO
-  return {}
+function findIndexesFromValues(tableValues) {
+  var row = tableValues[0]
+  var columnInfo = {}
+
+  for (var i = 0; i < row.length; i++) {
+    if (JsTurbo.date.isDate(row[i])) {
+      columnInfo.dateIndex = i
+      break
+    }
+  }
+
+  for (var i = 0; i < row.length; i++) {
+    if (JsTurbo.str.isNumber(row[i])) {
+      columnInfo.inflowIndex = i
+      break
+    }
+  }
+
+  for (var i = 0; i < row.length; i++) {
+    // Payee: at least 3 letters
+    if (JsTurbo.str.containsAlpha(row[i], 3)) {
+      columnInfo.payeeIndex = i
+      break
+    }
+  }
+  return columnInfo
 }
 
 /**
@@ -107,12 +133,15 @@ function findHeaderIndexByLabel(tableHeaderLabels, possibleLabelsForHeader) {
  * @return {Boolean}
  */
 function isValid (columnInfo) {
-  // TODO
-  return false
+  // Required indexes
+  if (!(columnInfo.dateIndex >= 0) ||
+    !(columnInfo.inflowIndex >= 0)) {
+    return false
+  }
+  return true
 }
 
 /**
- * TODO: Move to jsturbo
  * Check if a string contains another string ignoring case.
  * @param  {string} str - String where the search should be executed.
  * @param  {string} searched - String that should be contained.
