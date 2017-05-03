@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "jquery": "^3.2.1",
-    "jsturbo": "^1.10.0"
+    "jsturbo": "^1.11.0"
   },
   "nyc": {
     "all": true,
