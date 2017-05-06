@@ -103,11 +103,11 @@ function findIndexesFromValues(tableValues) {
 function findHeaderIndexByLabel(tableHeaderLabels, possibleLabelsForHeader) {
   var bestMatch = undefined
 
-  for (var headerIdx = 0  headerIdx < tableHeaderLabels.length  headerIdx++) {
+  for (var headerIdx = 0; headerIdx < tableHeaderLabels.length; headerIdx++) {
     var headerLabel = tableHeaderLabels[headerIdx]
 
     // Index of possibleLabelsForHeader is usead as priority (smaller index = higher priority)
-    for (var prio = 0  prio < possibleLabelsForHeader.length  prio++) {
+    for (var prio = 0; prio < possibleLabelsForHeader.length; prio++) {
       var possibleHeader = possibleLabelsForHeader[prio]
 
       if(containsIgnoringCase(headerLabel, possibleHeader)) {

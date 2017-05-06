@@ -14,7 +14,6 @@ import {date, num} from 'jsturbo'
    * @param  {ColumnInfo} columnInfo - Column information.
    * @return {Transaction[]} YNAB transactions.
    */
-}
 function createTransactions(tabularData, columnInfo) {
   var ynabTxs = []
   for(var row = 0; row < tabularData.data.length; row++) {
