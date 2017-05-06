@@ -152,5 +152,7 @@ function containsIgnoringCase(str, searched) {
 }
 
 module.exports = {
-  getColumnInfo: getColumnInfo
+  getColumnInfo: getColumnInfo,
+  //private methods exposed for testing only
+  _containsIgnoringCase: containsIgnoringCase
 }
