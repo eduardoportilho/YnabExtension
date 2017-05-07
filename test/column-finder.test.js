@@ -48,4 +48,31 @@ describe("column-finder", () => {
       })).to.be.false
     })
   })
+
+  describe("findHeaderIndexByLabel", () => {
+    it("should match amount (1)", () => {
+      expect(columnFinder._findHeaderIndexByLabel(
+        ['Date', 'Amount', 'Balance $'],
+        ['total', 'amount', 'value', '$']
+      )).to.equal(1)
+      expect(columnFinder._findHeaderIndexByLabel(
+        ['Date', 'Balance $', 'Amount'],
+        ['total', 'amount', 'value', '$']
+      )).to.equal(2)
+    })
+
+    it("should match Balace (2)", () => {
+      expect(columnFinder._findHeaderIndexByLabel(
+        ['date', 'Amount', 'Balance $'],
+        ['total', 'sum', 'value', '$']
+      )).to.equal(2)
+    })
+
+    it("should find no match", () => {
+      expect(columnFinder._findHeaderIndexByLabel(
+        ['date', 'Amount', 'Balance $'],
+        ['total', 'sum', 'value']
+      )).to.be.undefined
+    })
+  })
 })

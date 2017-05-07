@@ -162,5 +162,6 @@ module.exports = {
   getColumnInfo: getColumnInfo,
   //private methods exposed for testing only
   _containsIgnoringCase: containsIgnoringCase,
-  _isValid: isValid
+  _isValid: isValid,
+  _findHeaderIndexByLabel: findHeaderIndexByLabel
 }
