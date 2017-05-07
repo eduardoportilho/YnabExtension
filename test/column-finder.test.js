@@ -27,14 +27,24 @@ describe("column-finder", () => {
 
     it("should not validate missing date or inflow", () => {
       expect(columnFinder._isValid({
-        inflowIndex: 1
+        inflowIndex: 1,
+        payeeIndex: 2
       })).to.be.false
       expect(columnFinder._isValid({
-        dateIndex: 1
+        dateIndex: 1,
+        payeeIndex: 2
       })).to.be.false
+    })
+
+    it("should not validate duplicated indexes", () => {
       expect(columnFinder._isValid({
         dateIndex: 0,
         inflowIndex: 0
+      })).to.be.false
+      expect(columnFinder._isValid({
+        dateIndex: 0,
+        inflowIndex: 1,
+        payeeIndex: 1
       })).to.be.false
     })
   })

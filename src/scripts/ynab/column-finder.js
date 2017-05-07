@@ -135,8 +135,14 @@ function findHeaderIndexByLabel(tableHeaderLabels, possibleLabelsForHeader) {
 function isValid (columnInfo) {
   // Required indexes
   if (!(columnInfo.dateIndex >= 0) ||
-    !(columnInfo.inflowIndex >= 0) ||
-    columnInfo.inflowIndex === columnInfo.dateIndex) {
+    !(columnInfo.inflowIndex >= 0)) {
+    return false
+  }
+
+  // Indexes should be unique
+  if(columnInfo.inflowIndex === columnInfo.dateIndex ||
+    columnInfo.inflowIndex === columnInfo.payeeIndex ||
+    columnInfo.dateIndex === columnInfo.payeeIndex) {
     return false
   }
   return true
