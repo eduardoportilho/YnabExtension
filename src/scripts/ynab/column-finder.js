@@ -135,7 +135,8 @@ function findHeaderIndexByLabel(tableHeaderLabels, possibleLabelsForHeader) {
 function isValid (columnInfo) {
   // Required indexes
   if (!(columnInfo.dateIndex >= 0) ||
-    !(columnInfo.inflowIndex >= 0)) {
+    !(columnInfo.inflowIndex >= 0) ||
+    columnInfo.inflowIndex === columnInfo.dateIndex) {
     return false
   }
   return true
@@ -154,5 +155,6 @@ function containsIgnoringCase(str, searched) {
 module.exports = {
   getColumnInfo: getColumnInfo,
   //private methods exposed for testing only
-  _containsIgnoringCase: containsIgnoringCase
+  _containsIgnoringCase: containsIgnoringCase,
+  _isValid: isValid
 }
