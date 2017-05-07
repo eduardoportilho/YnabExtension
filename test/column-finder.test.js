@@ -75,4 +75,32 @@ describe("column-finder", () => {
       )).to.be.undefined
     })
   })
+
+  describe("findIndexesFromValues", () => {
+    it("should find indexes from values", () => {
+      expect(columnFinder._findIndexesFromValues(
+        [['10/01/2017', 'Restaurant', '100.00']]
+      )).to.eql({
+        dateIndex: 0,
+        inflowIndex: 2,
+        payeeIndex: 1
+      })
+    })
+
+    it("should use the first match", () => {
+      expect(columnFinder._findIndexesFromValues([[
+          '10/01/2017',
+          '10/02/2017',
+          '100.00',
+          '200.00',
+          'Restaurant',
+          'Shopping'
+        ]])
+      ).to.eql({
+        dateIndex: 0,
+        inflowIndex: 2,
+        payeeIndex: 4
+      })
+    })
+  })
 })

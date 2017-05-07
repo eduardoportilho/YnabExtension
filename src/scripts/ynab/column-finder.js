@@ -72,14 +72,23 @@ function findIndexesFromValues(tableValues) {
     }
   }
 
-  for (var i = 0; i < row.length; i++) {
+  for (i = 0; i < row.length; i++) {
+    if (i === columnInfo.dateIndex) {
+      continue
+    }
+
     if (JsTurbo.str.isNumber(row[i])) {
       columnInfo.inflowIndex = i
       break
     }
   }
 
-  for (var i = 0; i < row.length; i++) {
+  for (i = 0; i < row.length; i++) {
+    if (i === columnInfo.dateIndex ||
+      i === columnInfo.inflowIndex) {
+      continue
+    }
+
     // Payee: at least 3 letters
     if (JsTurbo.str.containsAlpha(row[i], 3)) {
       columnInfo.payeeIndex = i
@@ -163,5 +172,6 @@ module.exports = {
   //private methods exposed for testing only
   _containsIgnoringCase: containsIgnoringCase,
   _isValid: isValid,
-  _findHeaderIndexByLabel: findHeaderIndexByLabel
+  _findHeaderIndexByLabel: findHeaderIndexByLabel,
+  _findIndexesFromValues: findIndexesFromValues
 }
