@@ -173,5 +173,6 @@ module.exports = {
   _containsIgnoringCase: containsIgnoringCase,
   _isValid: isValid,
   _findHeaderIndexByLabel: findHeaderIndexByLabel,
-  _findIndexesFromValues: findIndexesFromValues
+  _findIndexesFromValues: findIndexesFromValues,
+  _findIndexesFromHeader: findIndexesFromHeader
 }
