@@ -54,6 +54,7 @@
     "mocha": "^3.3.0",
     "nyc": "^10.3.0",
     "preprocessify": "^1.0.1",
+    "testdouble": "^2.1.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
