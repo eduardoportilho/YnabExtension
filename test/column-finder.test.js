@@ -114,5 +114,15 @@ describe("column-finder", () => {
         payeeIndex: 1
       })
     })
+
+    it("should find indexes from part of the headers", () => {
+      expect(columnFinder._findIndexesFromHeader(
+        ['Date of transaction', 'Transacton payee', 'Inflow amount']
+      )).to.eql({
+        dateIndex: 0,
+        inflowIndex: 2,
+        payeeIndex: 1
+      })
+    })
   })
 })
