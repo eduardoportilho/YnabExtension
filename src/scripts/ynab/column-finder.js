@@ -21,7 +21,7 @@ let POSSIBLE_HEADER_LABELS = {
  * @param  {TabularData} tabularData - Tabular data.
  * @return {ColumnInfo} Column information.
  */
-function getColumnInfo(tabularData, domSelectionRange) {
+function getColumnInfo(tabularData) {
   var columnInfo;
   //1: try using the table header
   if (tabularData.header) {
@@ -32,9 +32,11 @@ function getColumnInfo(tabularData, domSelectionRange) {
   }
 
   // 2: try using the table values
-  columnInfo = findIndexesFromValues(tabularData.data)
-  if (isValid(columnInfo)) {
-    return columnInfo
+  if (tabularData.data) {
+    columnInfo = findIndexesFromValues(tabularData.data)
+    if (isValid(columnInfo)) {
+      return columnInfo
+    }
   }
   throw Error('Could not find column information.')
 }

@@ -1,5 +1,6 @@
 import {expect} from 'chai'
 import columnFinder from '../src/scripts/ynab/column-finder'
+import td from 'testdouble'
 
 describe("column-finder", () => {
   describe("containsIgnoringCase", () => {
@@ -123,6 +124,56 @@ describe("column-finder", () => {
         inflowIndex: 2,
         payeeIndex: 1
       })
+    })
+  })
+
+  describe("getColumnInfo", () => {
+
+    it("should use header to find indexes", () => {
+      let tabularData = {
+        header: ['date', 'payee', 'value'],
+        data: [
+          ['100.00', '10/01/2017', 'Restaurant']
+        ]
+      }
+      expect(columnFinder.getColumnInfo(tabularData)).to.eql({
+        dateIndex: 0,
+        inflowIndex: 2,
+        payeeIndex: 1
+      })
+    })
+
+    it("should use data to find indexes", () => {
+      let tabularData = {
+        data: [
+          ['100.00', '10/01/2017', 'Restaurant']
+        ]
+      }
+      expect(columnFinder.getColumnInfo(tabularData)).to.eql({
+        dateIndex: 1,
+        inflowIndex: 0,
+        payeeIndex: 2
+      })
+    })
+
+    it("should throw on invalid header", () => {
+      let tabularData = {
+        header: ['date', 'payee']
+      }
+      expect(() => {
+        columnFinder.getColumnInfo(tabularData)
+      }).to.throw('Could not find column information.')
+    })
+
+    it("should throw on invalid data", () => {
+      let tabularData = {
+        data: [
+          ['100.00',  'Restaurant']
+        ]
+      }
+      expect(() => {
+        columnFinder.getColumnInfo(tabularData)
+      }).to.throw('Could not find column information.')
     })
   })
 })
