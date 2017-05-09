@@ -1,0 +1,16 @@
+{
+    // TODO: Not due to babel. This article points some directions: https://gist.github.com/dchowitz/83bdd807b5fa016775f98065b381ca4e
+    "version": "0.2.0",
+    "configurations": [
+        {
+          "name": "Test",
+          "type": "node",
+          "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+          "stopOnEntry": false,
+          "args": [""],
+          "cwd": "${workspaceRoot}",
+          "runtimeExecutable": null,
+          "env": { "NODE_ENV": "test"}
+        }
+    ]
+}
