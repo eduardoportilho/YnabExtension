@@ -33,15 +33,19 @@ function createTransactions(tabularData, columnInfo) {
 }
 
 function getDate (rowValues, columnInfo) {
-  var txDate = date.fromString(rowValues[columnInfo.dateIndex])
-  return date.toStringDMY(txDate)
+  if (columnInfo.dateIndex >= 0 && columnInfo.dateIndex < rowValues.length) {
+    try {
+      var txDate = date.fromString(rowValues[columnInfo.dateIndex])
+      return date.toStringDMY(txDate)
+    } catch (any) {/* Let it pass and throw the error bellow */}
+  }
+  throw new Error('No date column.')
 }
 
 function getPayee (rowValues, columnInfo) {
   if (columnInfo.payeeIndex >= 0 && columnInfo.payeeIndex < rowValues.length) {
     return rowValues[columnInfo.payeeIndex]  
   }
-  
   throw new Error('No payee column.')
 }
 
@@ -59,5 +63,6 @@ module.exports = {
   createTransactions: createTransactions,
   //private methods exposed for testing only
   _getInflow: getInflow,
-  _getPayee: getPayee
+  _getPayee: getPayee,
+  _getDate: getDate
 }

@@ -58,9 +58,35 @@ describe('transaction-factory', () => {
     })
   })
   
-  xdescribe('getDate', () => {
-    it('should ...', () => {
-      expect().to.be.true
+  describe('getDate', () => {
+    it('should read date', () => {
+      let rowValues = ['31/01/2017', '12.3']
+      let columnInfo = {dateIndex: 0}
+      expect(transactionFactory._getDate(rowValues, columnInfo)).to.equal('31/01/2017')
+    })
+
+    it('should throw on no date', () => {
+      let rowValues = ['31/01/2017', '12.3']
+      let columnInfo = {}
+      expect(() => {
+        transactionFactory._getDate(rowValues, columnInfo)
+      }).to.throw('No date column')
+    })
+
+    it('should throw on invalid index', () => {
+      let rowValues = ['31/01/2017', '12.3']
+      let columnInfo = {dateIndex: 3}
+      expect(() => {
+        transactionFactory._getDate(rowValues, columnInfo)
+      }).to.throw('No date column')
+    })
+
+    it('should throw on invalid date', () => {
+      let rowValues = ['whatever', 'whatever']
+      let columnInfo = {dateIndex: 0}
+      expect(() => {
+        transactionFactory._getDate(rowValues, columnInfo)
+      }).to.throw('No date column')
     })
   })
   
