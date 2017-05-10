@@ -42,13 +42,17 @@ function getPayee (rowValues, columnInfo) {
 }
 
 function getInflow (rowValues, columnInfo) {
-  var inflow = 0
   if (columnInfo.inflowIndex >= 0) {
-    inflow = num.toNumber(rowValues[columnInfo.inflowIndex])
+    let inflow = num.toNumber(rowValues[columnInfo.inflowIndex])
+    if (num.isNumber(inflow)) {
+      return num.format(inflow, {'decimalPlaces': 2})
+    }
   }
-  return num.format(inflow, {'decimalPlaces': 2})
+  throw new Error('No inflow column.')
 }
 
 module.exports = {
-  createTransactions: createTransactions
+  createTransactions: createTransactions,
+  //private methods exposed for testing only
+  _getInflow: getInflow
 }

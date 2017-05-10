@@ -1,6 +1,5 @@
 import {expect} from 'chai'
 import columnFinder from '../src/scripts/ynab/column-finder'
-import td from 'testdouble'
 
 describe("column-finder", () => {
   describe("containsIgnoringCase", () => {
