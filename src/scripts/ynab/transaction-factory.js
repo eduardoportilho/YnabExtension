@@ -38,7 +38,11 @@ function getDate (rowValues, columnInfo) {
 }
 
 function getPayee (rowValues, columnInfo) {
-  return columnInfo.payeeIndex >= 0 ? rowValues[columnInfo.payeeIndex] : ''
+  if (columnInfo.payeeIndex >= 0 && columnInfo.payeeIndex < rowValues.length) {
+    return rowValues[columnInfo.payeeIndex]  
+  }
+  
+  throw new Error('No payee column.')
 }
 
 function getInflow (rowValues, columnInfo) {
@@ -54,5 +58,6 @@ function getInflow (rowValues, columnInfo) {
 module.exports = {
   createTransactions: createTransactions,
   //private methods exposed for testing only
-  _getInflow: getInflow
+  _getInflow: getInflow,
+  _getPayee: getPayee
 }

@@ -24,11 +24,37 @@ describe('transaction-factory', () => {
         transactionFactory._getInflow(rowValues, columnInfo)
       }).to.throw('No inflow column')
     })
+
+    it('should throw on invalid index', () => {
+      let rowValues = ['whatever', '12.3']
+      let columnInfo = {inflowIndex: 3}
+      expect(() => {
+        transactionFactory._getInflow(rowValues, columnInfo)
+      }).to.throw('No inflow column')
+    })
   })
   
-  xdescribe('getPayee', () => {
-    it('should ...', () => {
-      expect().to.be.true
+  describe('getPayee', () => {
+    it('should read payee', () => {
+      let rowValues = ['Payee 1', '12.3']
+      let columnInfo = {payeeIndex: 0}
+      expect(transactionFactory._getPayee(rowValues, columnInfo)).to.equal('Payee 1')
+    })
+
+    it('should throw on no payee', () => {
+      let rowValues = ['whatever', '12.3']
+      let columnInfo = {}
+      expect(() => {
+        transactionFactory._getPayee(rowValues, columnInfo)
+      }).to.throw('No payee column')
+    })
+
+    it('should throw on invalid index', () => {
+      let rowValues = ['whatever', '12.3']
+      let columnInfo = {payeeIndex: 3}
+      expect(() => {
+        transactionFactory._getPayee(rowValues, columnInfo)
+      }).to.throw('No payee column')
     })
   })
   
