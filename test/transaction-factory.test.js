@@ -1,5 +1,6 @@
 import {expect} from 'chai'
 import transactionFactory from '../src/scripts/ynab/transaction-factory'
+import td from 'testdouble'
 
 describe('transaction-factory', () => {
   describe('getInflow', () => {
@@ -90,9 +91,43 @@ describe('transaction-factory', () => {
     })
   })
   
-  xdescribe('createTransactions', () => {
-    it('should ...', () => {
-      expect().to.be.true
+  describe('createTransactions', () => {
+    afterEach(() => {
+      td.reset()
+    })
+
+    it('should create transaction from valid row', () => {
+      let tabularData = {
+        data: [['31/01/2017', 'Payee 1', '12.3']]
+      }
+      let columnInfo = {
+        dateIndex: 0,
+        payeeIndex: 1,
+        inflowIndex: 2
+      }
+      expect(transactionFactory.createTransactions(tabularData, columnInfo)).to.eql([
+        {
+          date: '31/01/2017',
+          payee: 'Payee 1',
+          inflow: '12.30',
+          outflow: ''
+        }
+      ])
+    })
+
+    it('should ignore invalid rows', () => {
+      let tabularData = {
+        data: [['invalid date', 'Payee 1', '12.3']]
+      }
+      let columnInfo = {
+        dateIndex: 0,
+        payeeIndex: 1,
+        inflowIndex: 2
+      }
+      td.replace(console, 'log')
+      expect(transactionFactory.createTransactions(tabularData, columnInfo)).to.eql([])
+      td.verify(console.log(td.matchers.contains('Ignoring invalid row')))
+      td.reset()
     })
   })
 })
