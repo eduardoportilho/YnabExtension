@@ -3,11 +3,11 @@ import columnFinder from '../src/scripts/ynab/column-finder'
 
 describe("column-finder", () => {
   describe("containsIgnoringCase", () => {
-    it("should contain sting", () => {
+    it("should contain string", () => {
       expect(columnFinder._containsIgnoringCase('Amount $', 'amount')).to.be.true
     })
 
-    it("should not contain sting", () => {
+    it("should not contain string", () => {
       expect(columnFinder._containsIgnoringCase('Amount $', 'mmo')).to.be.false
     })
   })
