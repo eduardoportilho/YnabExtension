@@ -71,7 +71,12 @@
       "lcov"
     ],
     "include": [
-      "src/scripts"
+      "src/scripts/**/*.js"
+    ],
+    "exclude": [
+      "src/scripts/livereload.js",
+      "src/scripts/utils/ext.js",
+      "src/scripts/utils/storage.js"
     ],
     "require": [
       "babel-register"
