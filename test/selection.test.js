@@ -1,5 +1,4 @@
 import {expect} from 'chai'
-import td from 'testdouble'
 import selection from '../src/scripts/utils/selection'
 
 describe("selection", () => {

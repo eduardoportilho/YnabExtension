@@ -7,6 +7,7 @@
 module.exports = {
   /**
    * Get the DOM elements contained in the user selection.
+   * @param  {Window} aWindow - Window object.
    * @return {DomSelectionRange} Selection range.
    */
   getSelectedElements: (aWindow) => {
