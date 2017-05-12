@@ -3,16 +3,10 @@
  * script to manage some task or state. Background pages to the rescue.
  */
 
-import ext from "./utils/ext"
-
-chrome.contextMenus.create({
-  "title": "Export to YNAB",
-  "contexts":["selection"],
-  "onclick": ynabExportSelection
-})
+import ext from './utils/ext'
 
 /**
- * Context menu selection click.
+ * Handle context menu selection click.
  * 
  * @param  {Object} info - Information about the item clicked and the context where the click happened.
  * @param  {integer|string} info.menuItemId - The ID of the menu item that was clicked.
@@ -42,4 +36,16 @@ function ynabExportSelection(info, tab) {
       'selectionText': info.selectionText
     }
   })
+}
+
+// Create the context menu entry
+chrome.contextMenus.create({
+  "title": "Export to YNAB",
+  "contexts":["selection"],
+  "onclick": ynabExportSelection
+})
+
+// Export function for testing purposes
+module.exports = {
+  ynabExportSelection: ynabExportSelection
 }
