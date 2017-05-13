@@ -5,10 +5,10 @@
  *  it was packaged with (its parent extension).
  */
 
-import ext from "./utils/ext"
-import selection from "./utils/selection"
-import download from "./utils/download"
-import ynabExporter from "./ynab/exporter"
+import ext from './utils/ext'
+import selection from './utils/selection'
+import download from './utils/download'
+import ynabExporter from './ynab/exporter'
 
 /**
  * Grab the selected elements, extract a YNAB csv out of it and put 
@@ -20,7 +20,7 @@ var ynabExportSelection = (selectionInfo) => {
   var selectedElements = selection.getSelectedElements(window)
   try {
     var ynabCsvString = ynabExporter.generateCsv(selectedElements)
-    download.createTextFileForDownload(ynabCsvString, 'text/csv')
+    download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
   } catch (error) {
     //TODO Show message
   }
@@ -44,3 +44,9 @@ function onMessage(message, sender, sendResponse) {
 }
 
 ext.runtime.onMessage.addListener(onMessage)
+
+// Export function for testing purposes
+module.exports = {
+  ynabExportSelection: ynabExportSelection,
+  onMessage: onMessage
+}
