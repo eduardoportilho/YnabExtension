@@ -16,6 +16,7 @@
   "permissions": [
     "contextMenus",
     "tabs",
+    "notifications",
     "storage",
     "http://*/*",
     "https://*/*"

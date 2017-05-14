@@ -17,13 +17,18 @@ import ynabExporter from './ynab/exporter'
  * @param  {string} [selectionInfo.selectionText] - Text selection
  */
 var ynabExportSelection = (selectionInfo) => {
-  var selectedElements = selection.getSelectedElements(window)
-  try {
-    var ynabCsvString = ynabExporter.generateCsv(selectedElements)
-    download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
-  } catch (error) {
-    //TODO Show message
-  }
+  
+    ext.notifications.create('ynb.export.error', {
+      title: 'Error on export',
+      type: 'basic',
+      message: 'Error on export.'
+    }, function() {})
+  // var selectedElements = selection.getSelectedElements(window)
+  // try {
+  //   var ynabCsvString = ynabExporter.generateCsv(selectedElements)
+  //   download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
+  // } catch (error) {
+  // }
 }
 
 /**
