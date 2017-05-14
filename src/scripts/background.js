@@ -38,14 +38,48 @@ function ynabExportSelection(info, tab) {
   })
 }
 
+/**
+ * Message listener
+ * @param  {Object} message - Message
+ * @param  {string} message.action - Action to be performed
+ * @param  {Object} [message.data] - Action data
+ * @param  {MessageSender} sender - Message sender
+ *
+ * @see  https://developer.chrome.com/extensions/runtime#event-onMessage
+ */
+function onRuntimeMessage(message, sender) {
+  if (message.action === 'displayMessage') {
+    displayMessage(message.data.title, message.data.message)
+  }
+}
+
+/**
+ * Display a message to the user.
+ * @param  {string} title - Message title.
+ * @param  {string} message - Message body.
+ */
+function displayMessage(title, message) {
+  ext.notifications.create('ynab.export.error', {
+    type: 'basic',
+    title: title,
+    message: message,
+    iconUrl: ext.runtime.getURL('icons/icon-48.png')
+  })
+}
+
 // Create the context menu entry
-chrome.contextMenus.create({
+ext.contextMenus.create({
   "title": "Export to YNAB",
   "contexts":["selection"],
   "onclick": ynabExportSelection
 })
 
-// Export function for testing purposes
+// Listen for messages
+ext.runtime.onMessage.addListener(onRuntimeMessage)
+
+// Export functions for testing purposes
 module.exports = {
-  ynabExportSelection: ynabExportSelection
+  ynabExportSelection: ynabExportSelection,
+  onRuntimeMessage: onRuntimeMessage,
+  displayMessage: displayMessage
 }

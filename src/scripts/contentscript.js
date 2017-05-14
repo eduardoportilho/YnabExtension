@@ -17,18 +17,13 @@ import ynabExporter from './ynab/exporter'
  * @param  {string} [selectionInfo.selectionText] - Text selection
  */
 var ynabExportSelection = (selectionInfo) => {
-  
-    ext.notifications.create('ynb.export.error', {
-      title: 'Error on export',
-      type: 'basic',
-      message: 'Error on export.'
-    }, function() {})
-  // var selectedElements = selection.getSelectedElements(window)
-  // try {
-  //   var ynabCsvString = ynabExporter.generateCsv(selectedElements)
-  //   download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
-  // } catch (error) {
-  // }
+  var selectedElements = selection.getSelectedElements(window)
+  try {
+    var ynabCsvString = ynabExporter.generateCsv(selectedElements)
+    download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
+  } catch (error) {
+    displayMessage('Export error', error.message)
+  }
 }
 
 /**
@@ -42,13 +37,29 @@ var ynabExportSelection = (selectionInfo) => {
  *
  * @see  https://developer.chrome.com/extensions/runtime#event-onMessage
  */
-function onMessage(message, sender, sendResponse) {
+function onRuntimeMessage(message, sender, sendResponse) {
   if (message.action === 'ynabExportSelection') {
     ynabExportSelection(message.data)
   }
 }
 
-ext.runtime.onMessage.addListener(onMessage)
+/**
+ * Display a message to the user.
+ * @param  {string} title - Message title.
+ * @param  {string} message - Message body.
+ */
+function displayMessage(title, message) {
+  ext.runtime.sendMessage({
+    action: 'displayMessage',
+    data: {
+      'title': title,
+      message: message
+    }
+  })
+}
+
+// Listen for messages
+ext.runtime.onMessage.addListener(onRuntimeMessage)
 
 // Export function for testing purposes
 module.exports = {
