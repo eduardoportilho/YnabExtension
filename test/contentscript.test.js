@@ -50,17 +50,24 @@ describe("contentscript", () => {
       td.verify(download.createTextFileForDownload(window, 'test-csv', 'text/csv'))
     })
 
-    xit("should show error mesage on exception", () => {
+    it("should show error mesage on exception", () => {
       // given
-      let ext = {runtime: {onMessage: td.object(['addListener'])}}
-      let selection = td.object(['getSelectedElements'])
-      let ynabExporter = td.object(['generateCsv'])
-
-      td.when(selection.getSelectedElements()).thenReturn('test-selection')
-      td.when(ynabExporter.generateCsv('test-selection')).thenThrow(new Error('Test error'))
+      td.when(selection.getSelectedElements(td.matchers.anything()))
+        .thenReturn('test-selection')
+      td.when(ynabExporter.generateCsv('test-selection'))
+        .thenThrow(new Error('Test error'))
 
       // when
       contentscript.ynabExportSelection()
+
+      // then
+      td.verify(runtime_sendMessage({
+        action: 'displayMessage',
+        data: {
+          'title': 'Export error',
+          message: 'Test error'
+        }
+      }))
     })
   })
 })
