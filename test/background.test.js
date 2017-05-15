@@ -33,7 +33,6 @@ describe("background", () => {
     td.reset()
   })
 
-
   describe("component initialization", () => {
     it("should create context menu and add listener", () => {
       // when: the component is initialized, then:

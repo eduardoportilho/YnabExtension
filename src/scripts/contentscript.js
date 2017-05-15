@@ -64,5 +64,5 @@ ext.runtime.onMessage.addListener(onRuntimeMessage)
 // Export function for testing purposes
 module.exports = {
   ynabExportSelection: ynabExportSelection,
-  onMessage: onMessage
+  onRuntimeMessage: onRuntimeMessage
 }
