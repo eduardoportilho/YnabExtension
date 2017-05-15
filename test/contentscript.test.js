@@ -33,6 +33,15 @@ describe("contentscript", () => {
     td.reset()
   })
 
+  describe("component initialization", () => {
+    it("should add message listener", () => {
+      // when: the component is initialized, then:
+      td.verify(
+        runtime_onMessage_addListener(contentscript.onRuntimeMessage)
+      )
+    })
+  })
+
   describe("ynabExportSelection", () => {
     it("should generate csv with selection and download", () => {
       // given
@@ -45,8 +54,10 @@ describe("contentscript", () => {
       contentscript.ynabExportSelection()
 
       // then
-      td.verify(selection.getSelectedElements(window))
-      td.verify(ynabExporter.generateCsv('test-selection'))
+      
+      // no need to verify, since stubbing does the job
+      //td.verify(selection.getSelectedElements(window))
+      //td.verify(ynabExporter.generateCsv('test-selection'))
       td.verify(download.createTextFileForDownload(window, 'test-csv', 'text/csv'))
     })
 
@@ -68,6 +79,34 @@ describe("contentscript", () => {
           message: 'Test error'
         }
       }))
+    })
+  })
+
+  describe("onRuntimeMessage", () => {
+    it("should handle 'ynabExportSelection' action", () => {
+      // given
+      contentscript.ynabExportSelection = td.function()
+
+      // when
+      contentscript.onRuntimeMessage({
+        action: 'ynabExportSelection',
+        data: 'test-data'
+      })
+
+      // then
+      td.verify(selection.getSelectedElements(td.matchers.anything()))
+      td.verify(ynabExporter.generateCsv(td.matchers.anything()))
+      td.verify(download.createTextFileForDownload(td.matchers.anything(), td.matchers.anything(), 'text/csv'))
+    })
+    
+    it("should ignore other actions", () => {
+      // when
+      contentscript.onRuntimeMessage({action: 'otherMessage'})
+
+      // then
+      td.verify(selection.getSelectedElements(), {times: 0, ignoreExtraArgs: true})
+      td.verify(ynabExporter.generateCsv(), {times: 0, ignoreExtraArgs: true})
+      td.verify(download.createTextFileForDownload(), {times: 0, ignoreExtraArgs: true})
     })
   })
 })
