@@ -12,7 +12,7 @@ import {date, num} from 'jsturbo'
    * Build YNAB transactions from the tabular data based on the column info.
    * @param  {TabularData} tabularData - Tabular data.
    * @param  {ColumnInfo} columnInfo - Column information.
-   * @return {Transaction[]} YNAB transactions.
+   * @return {YnabTx[]} YNAB transactions.
    */
 function createTransactions(tabularData, columnInfo) {
   var ynabTxs = []
