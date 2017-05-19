@@ -18,7 +18,7 @@ describe("transaction-stats", () => {
     })
   })
 
-  describe("genereateStatistics", () => {
+  describe("generateStatistics", () => {
     it("should calculate inflow percentage", () => {
       // given:
       let ynabTxs = [
