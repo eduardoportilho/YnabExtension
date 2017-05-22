@@ -4,7 +4,7 @@
  * Credit card transactions are outflows, so the signal should be negative.
  */
 
-import {obj} from 'jsturbo'
+import {obj, str} from 'jsturbo'
 
 /**
  * Check if the processor should be applyed.
@@ -49,6 +49,8 @@ function invertTxAmountSignal(ynabTx) {
 function invertNumberStringSignal(numberString) {
   if (numberString.charAt(0) === '-') {
     return numberString.replace(/\-/g, '')
+  } else if(str.toNumber(numberString) === 0.0) {
+    return numberString
   } else {
     return '-' + numberString
   }

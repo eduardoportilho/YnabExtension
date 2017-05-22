@@ -14,4 +14,18 @@ describe("invert-credit-card.js", () => {
       expect(invertCreditCard.shouldApply(undefined, {inflowPercentage: 0})).to.be.false
     })
   })
+  describe("invertNumberStringSignal", () => {
+    it("should invert positive numbers ", () => {
+      expect(invertCreditCard.invertNumberStringSignal('12.34')).to.equal('-12.34')
+      expect(invertCreditCard.invertNumberStringSignal('10')).to.equal('-10')
+    })
+    it("should invert negative numbers", () => {
+      expect(invertCreditCard.invertNumberStringSignal('-12.34')).to.equal('12.34')
+      expect(invertCreditCard.invertNumberStringSignal('-10')).to.equal('10')
+    })
+    it("should not invert zero", () => {
+      expect(invertCreditCard.invertNumberStringSignal('0.00')).to.equal('0.00')
+      expect(invertCreditCard.invertNumberStringSignal('0')).to.equal('0')
+    })
+  })
 })
