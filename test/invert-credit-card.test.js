@@ -39,5 +39,27 @@ describe("invert-credit-card.js", () => {
       expect(invertCreditCard.invertTxAmountSignal({outflow: '12.34'})).to.eql({outflow: '-12.34'})
       expect(invertCreditCard.invertTxAmountSignal({outflow: '-12.34'})).to.eql({outflow: '12.34'})
     })
+    it("should not invert empty tx ", () => {
+      expect(invertCreditCard.invertTxAmountSignal({date: '10/10/2017'})).to.eql({date: '10/10/2017'})
+    })
+  })
+  
+  describe("processTransactions", () => {
+    it("should invert transactions ", () => {
+      expect(invertCreditCard.processTransactions(
+        [
+          {inflow: '12.34'},
+          {inflow: '-43.21'},
+          {outflow: '-43.21'},
+          {inflow: '0.00'}
+        ]
+      )).to.eql([
+          {inflow: '-12.34'},
+          {inflow: '43.21'},
+          {outflow: '43.21'},
+          {inflow: '0.00'}
+        ]
+      )
+    })
   })
 })
