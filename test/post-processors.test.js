@@ -26,7 +26,7 @@ describe("post-processors.js", () => {
     it("should apply processors", () => {
       // given:
       let stats = 'test-stats'
-      let transactions = [1, 2, 3]
+      let transactions = 'test-transactions'
 
       // expect:
       td.when(transactionStats.generateStatistics(transactions))
@@ -38,6 +38,23 @@ describe("post-processors.js", () => {
 
       // when, then:
       expect(postProcessors.processTransactions(transactions)).to.equal('processed-transactions')
+    })
+
+    it("should not apply processors", () => {
+      // given:
+      let stats = 'test-stats'
+      let transactions = 'test-transactions'
+
+      // expect:
+      td.when(transactionStats.generateStatistics(transactions))
+        .thenReturn(stats)
+      td.when(invertCreditCard.shouldApply(transactions, stats))
+        .thenReturn(false)
+      td.when(invertCreditCard.processTransactions(transactions, stats))
+        .thenReturn('processed-transactions')
+
+      // when, then:
+      expect(postProcessors.processTransactions(transactions)).to.equal('test-transactions')
     })
   })
 })
