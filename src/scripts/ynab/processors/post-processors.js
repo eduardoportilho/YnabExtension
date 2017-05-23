@@ -1,5 +1,5 @@
-import transactionStats from './transaction-stats'
-import invertCreditCard from './processors/invert-credit-card.js'
+import transactionStats from '../transaction-stats'
+import invertCreditCard from './invert-credit-card'
 
 /**
  * List of post-processors
@@ -20,7 +20,7 @@ function processTransactions(transactions) {
   for (var i = 0 ; i < POST_PROCESSORS.length ; i++) {
     var processor = POST_PROCESSORS[i]
     if (processor.shouldApply(processedTransactions, stats)) {
-      processedTransactions = processTransactions(processedTransactions, stats)
+      processedTransactions = processor.processTransactions(processedTransactions, stats)
     }
   }
   return processedTransactions
