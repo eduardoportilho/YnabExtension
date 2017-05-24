@@ -38,6 +38,7 @@ var ynabExportSelection = (selectionInfo) => {
  * @see  https://developer.chrome.com/extensions/runtime#event-onMessage
  */
 function onRuntimeMessage(message, sender, sendResponse) {
+  console.log('ynabExport.contentscript.onMessage')
   if (message.action === 'ynabExportSelection') {
     ynabExportSelection(message.data)
   }
