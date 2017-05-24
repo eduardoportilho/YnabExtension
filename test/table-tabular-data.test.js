@@ -1,10 +1,10 @@
 // https://github.com/rstacruz/jsdom-global: inject document, window and other DOM API into your Node.js environment.
 import 'jsdom-global/register'
 import {expect} from 'chai'
-import tabular from '../src/scripts/utils/tabular-data'
+import tabular from '../src/scripts/utils/table-tabular-data'
 import $ from 'jquery'
 
-describe("tabular-data", function() {
+describe("table-tabular-data", function() {
 
   before(function () {
     document.body.innerHTML = '<div>' + 
