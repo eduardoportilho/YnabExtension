@@ -26,7 +26,7 @@ function createTransactions(tabularData, columnInfo) {
       ynabTx.outflow = '' // Ignore outflow, using negative inflow instead
       ynabTxs.push(ynabTx)
     } catch (any) {
-      console.log("Ignoring invalid row: (" + rowValues + ")(" + any.message + ")")
+      console.log("Ignoring invalid row: row-content=[" + rowValues + "] message=[" + any.message + "]")
     }
   }
   return ynabTxs
