@@ -7,6 +7,7 @@ describe("exporter", () => {
   var columnFinder
   var transactionFactory
   var csvBuilder
+  var postProcessors
   var exporter
 
   beforeEach(() => {
@@ -14,12 +15,14 @@ describe("exporter", () => {
     columnFinder = td.object(['getColumnInfo'])
     transactionFactory = td.object(['createTransactions'])
     csvBuilder = td.object(['buildCsv'])
+    postProcessors = td.object(['processTransactions'])
 
     exporter = proxyquire('../src/scripts/ynab/exporter.js', {
       '../utils/tabular-data': tabular,
       './column-finder': columnFinder,
       './transaction-factory': transactionFactory,
-      './csv-builder': csvBuilder
+      './csv-builder': csvBuilder,
+      './processors/post-processors.js': postProcessors
     })
   })
 
@@ -34,6 +37,7 @@ describe("exporter", () => {
       let tabularData = 'test-tabularData'
       let columnInfo = 'test-columnInfo'
       let transactions = 'test-transactions'
+      let processedTransactions = 'processed-transactions'
       let csv = 'test-csv'
 
       td.when(tabular.getTabularDataFromSelection(domSelectionRange))
@@ -42,7 +46,9 @@ describe("exporter", () => {
         .thenReturn(columnInfo)
       td.when(transactionFactory.createTransactions(tabularData, columnInfo))
         .thenReturn(transactions)
-      td.when(csvBuilder.buildCsv(transactions))
+      td.when(postProcessors.processTransactions(transactions))
+        .thenReturn(processedTransactions)
+      td.when(csvBuilder.buildCsv(processedTransactions))
         .thenReturn(csv)
 
       // when, then:

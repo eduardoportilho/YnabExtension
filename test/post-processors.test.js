@@ -2,8 +2,6 @@ import {expect} from 'chai'
 import td from 'testdouble'
 import proxyquire from 'proxyquire'
 
-import postProcessors from '../src/scripts/ynab/processors/post-processors.js'
-
 describe("post-processors.js", () => {
   var postProcessors
   var transactionStats
