@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A browser extension to export tabular data to YNAB CSV",
   "scripts": {
-    "test": "cross-env NODE_ENV=test nyc mocha",
+    "test": "cross-env NODE_ENV=test nyc mocha --recursive",
     "chrome-build": "TARGET=chrome gulp",
     "opera-build": "TARGET=opera gulp",
     "firefox-build": "TARGET=firefox gulp",
