@@ -13,17 +13,44 @@ import div from './div-tabular-data'
  * @throws {Error} If no tabular data was found in the selection.
  */
 function getTabularDataFromSelection(domSelectionRange) {
+  var tabularData
   try {
-    return table.getTabularDataFromSelection(domSelectionRange)
+    tabularData = table.getTabularDataFromSelection(domSelectionRange)
   } catch(any) {}
 
   try {
-    return div.getTabularDataFromSelection(domSelectionRange)
+    if (tabularData === undefined) {
+      tabularData = div.getTabularDataFromSelection(domSelectionRange)
+    }
   } catch(any) {}
-  
-  throw Error('Could not find tabular data.')
+
+  if (tabularData === undefined) {
+    throw Error('Could not find tabular data.')
+  }
+
+  return normalizeTabularData(tabularData)
+}
+
+function normalizeTabularData(tabularData) {
+  var colCountMin, colCountMax, row
+  for (var i = 0; i < tabularData.data.length; i++) {
+    row = tabularData.data[i]
+    if (colCountMin === undefined || colCountMin > row.length) {
+      colCountMin = row.length
+    }
+    if (colCountMax === undefined || colCountMax < row.length) {
+      colCountMax = row.length
+    }
+  }
+  if (colCountMin === colCountMax) {
+    return tabularData
+  }
+
+  //TODO continuar normalizando...
 }
 
 module.exports = {
-  getTabularDataFromSelection: getTabularDataFromSelection
+  getTabularDataFromSelection: getTabularDataFromSelection,
+  //private methods exposed for testing only
+  _normalizeTabularData: normalizeTabularData
 }
