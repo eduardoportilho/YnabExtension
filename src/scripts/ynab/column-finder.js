@@ -79,7 +79,7 @@ function findIndexesFromValues(tableValues) {
       continue
     }
 
-    if (JsTurbo.str.isNumber(row[i]) || isAlternativenumberFormat(row[i])) {
+    if (JsTurbo.str.isNumber(row[i]) || isCurrencyNumber(row[i])) {
       columnInfo.inflowIndex = i
       break
     }
@@ -172,13 +172,14 @@ function containsIgnoringCase(str, searched) {
 
 // TODO move to jsturbo
 function isAlternativeDateFormat(text) {
+  // [space][DD][space][mmm][space]
   return /^\s*\d{1,2}\s*\w{3}\s*$/i.test(text)
 }
 
 // TODO move to jsturbo
-function isAlternativenumberFormat(text) {
-  //TODO...
-  return false
+function isCurrencyNumber(text) {
+  // [space] [curency] [space] [digits] ([space_or_separator] [digits]) [space] [curency] [space]
+  return /^\s?\w{0,3}\s?\d+([\s\.,]?\d*)*\s?\w{0,3}\s?$/gi.test(text)
 }
 
 module.exports = {
