@@ -31,6 +31,11 @@ function getTabularDataFromSelection(domSelectionRange) {
   return normalizeTabularData(tabularData)
 }
 
+/**
+ * Make all the rows of the tabular data have the same number of columns, adding empty cells if necessary.
+ * @param  {TabularData} tabularData - Tabular data.
+ * @return {TabularData} Normalized tabular data.
+ */
 function normalizeTabularData(tabularData) {
   var colCountMin, colCountMax, row
   for (var i = 0; i < tabularData.data.length; i++) {
@@ -46,11 +51,67 @@ function normalizeTabularData(tabularData) {
     return tabularData
   }
 
-  //TODO continuar normalizando...
+  let columnInfo = getColumnInfo(tabularData, colCountMax)
+
+  for (var i = 0; i < tabularData.data.length; i++) {
+    row = tabularData.data[i]
+    if (row.length < colCountMax) {
+      tabularData.data[i] = padRow(row, colCountMax, columnInfo)
+    }
+  }
+  return tabularData
+}
+
+function getColumnInfo(tabularData, colCount) {
+  // initialize with {empty: true}
+  let columnInfo = Array.apply(null, {length: colCount}).map(() => { return {empty: true}})
+
+  for (var i = 0; i < tabularData.data.length; i++) {
+    var row = tabularData.data[i]
+    // ignore rows that need padding
+    if (row.length < colCount) {
+      continue
+    }
+    for (var col = 0; col < colCount ; col++) {
+      if (!isEmpty(row[col])) {
+        columnInfo[col] = {empty: false}
+      }
+    }
+  }
+  return columnInfo
+}
+
+function padRow(row, size, columnInfo) {
+  for (var col = 0; col < size ; col++) {
+    // pad completed
+    if (row.length === size) {
+      break
+    }
+
+    // reached end of row and still need to pad
+    if (row.length < (col + 1)) {
+      row.push('')
+      continue
+    }
+
+    // reached a cell that should be empty but is not and still need to pad
+    let shouldBeEmptyCell = columnInfo[col].empty
+    let isEmptyCell = isEmpty(row[col])
+
+    if (shouldBeEmptyCell && !isEmptyCell) {
+      row.splice(col, 0, '')
+    }
+  }
+  return row
+}
+
+function isEmpty(cell) {
+  return cell.replace(/\s/g, '').length <= 0
 }
 
 module.exports = {
   getTabularDataFromSelection: getTabularDataFromSelection,
   //private methods exposed for testing only
-  _normalizeTabularData: normalizeTabularData
+  _normalizeTabularData: normalizeTabularData,
+  _padRow: padRow
 }
