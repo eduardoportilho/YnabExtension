@@ -68,7 +68,7 @@ function findIndexesFromValues(tableValues) {
   var columnInfo = {}
 
   for (var i = 0; i < row.length; i++) {
-    if (JsTurbo.date.isDate(row[i])) {
+    if (JsTurbo.date.isDate(row[i]) || isAlternativeDateFormat(row[i])) {
       columnInfo.dateIndex = i
       break
     }
@@ -79,7 +79,7 @@ function findIndexesFromValues(tableValues) {
       continue
     }
 
-    if (JsTurbo.str.isNumber(row[i])) {
+    if (JsTurbo.str.isNumber(row[i]) || isAlternativenumberFormat(row[i])) {
       columnInfo.inflowIndex = i
       break
     }
@@ -167,6 +167,18 @@ function isValid (columnInfo) {
  */
 function containsIgnoringCase(str, searched) {
   return str.toLowerCase().indexOf(searched.toLowerCase()) >= 0
+}
+
+
+// TODO move to jsturbo
+function isAlternativeDateFormat(text) {
+  return /^\s*\d{1,2}\s*\w{3}\s*$/i.test(text)
+}
+
+// TODO move to jsturbo
+function isAlternativenumberFormat(text) {
+  //TODO...
+  return false
 }
 
 module.exports = {

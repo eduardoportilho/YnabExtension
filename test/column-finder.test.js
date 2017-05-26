@@ -87,6 +87,23 @@ describe("column-finder", () => {
       })
     })
 
+    it("should find indexes from values (2)", () => {
+      expect(columnFinder._findIndexesFromValues(
+        [[
+          '18 apr',
+          'ICA KVANTUM FLEN 020350 FLEN',
+          'RA',
+          '',
+          'RENATA DE SOUZA AFFONSO',
+          '1 526,18 kr'
+        ]]
+      )).to.eql({
+        dateIndex: 0,
+        payeeIndex: 1,
+        inflowIndex: 5
+      })
+    })
+
     it("should use the first match", () => {
       expect(columnFinder._findIndexesFromValues([[
           '10/01/2017',
