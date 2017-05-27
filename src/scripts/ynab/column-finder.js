@@ -68,7 +68,7 @@ function findIndexesFromValues(tableValues) {
   var columnInfo = {}
 
   for (var i = 0; i < row.length; i++) {
-    if (JsTurbo.date.isDate(row[i]) || isAlternativeDateFormat(row[i])) {
+    if (JsTurbo.date.isDate(row[i])) {
       columnInfo.dateIndex = i
       break
     }
@@ -167,13 +167,6 @@ function isValid (columnInfo) {
  */
 function containsIgnoringCase(str, searched) {
   return str.toLowerCase().indexOf(searched.toLowerCase()) >= 0
-}
-
-
-// TODO move to jsturbo
-function isAlternativeDateFormat(text) {
-  // [space][DD][space][mmm][space]
-  return /^\s*\d{1,2}\s*\w{3}\s*$/i.test(text)
 }
 
 // TODO move to jsturbo
