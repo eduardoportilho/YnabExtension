@@ -18,18 +18,24 @@ function createTransactions(tabularData, columnInfo) {
   var ynabTxs = []
   for(var row = 0; row < tabularData.data.length; row++) {
     var rowValues = tabularData.data[row]
+    var ynabTransaction
     try {
-      var ynabTx = {}
-      ynabTx.date = getDate(rowValues, columnInfo)
-      ynabTx.payee = getPayee(rowValues, columnInfo)
-      ynabTx.inflow = getInflow(rowValues, columnInfo)
-      ynabTx.outflow = '' // Ignore outflow, using negative inflow instead
-      ynabTxs.push(ynabTx)
+      ynabTransaction = buildTransaction(rowValues, columnInfo)
+      ynabTxs.push(ynabTransaction)
     } catch (any) {
       console.log("Ignoring invalid row: row-content=[" + rowValues + "] message=[" + any.message + "]")
     }
   }
   return ynabTxs
+}
+
+function buildTransaction(rowValues, columnInfo) {
+  let ynabTx = {}
+  ynabTx.date = getDate(rowValues, columnInfo)
+  ynabTx.payee = getPayee(rowValues, columnInfo)
+  ynabTx.inflow = getInflow(rowValues, columnInfo)
+  ynabTx.outflow = '' // Ignore outflow, using negative inflow instead
+  return ynabTx
 }
 
 function getDate (rowValues, columnInfo) {
