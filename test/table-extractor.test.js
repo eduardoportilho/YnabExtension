@@ -1,7 +1,7 @@
 // https://github.com/rstacruz/jsdom-global: inject document, window and other DOM API into your Node.js environment.
 import 'jsdom-global/register'
 import {expect} from 'chai'
-import tabular from '../src/scripts/utils/table-tabular-data'
+import tabular from '../src/scripts/utils/data_extractors/table-extractor'
 import $ from 'jquery'
 
 describe("table-tabular-data", function() {
@@ -71,7 +71,7 @@ describe("table-tabular-data", function() {
         start: $('#td1a').get(),
         end: $('#td1b').get()
       }
-      expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.true
+      expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.true
     })
 
     it("row selection should be inside the table", function() {
@@ -79,7 +79,7 @@ describe("table-tabular-data", function() {
         start: $('#tr2').get(),
         end: $('#tr3').get()
       }
-      expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.true
+      expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.true
     })
 
     it("selection should be outside the table", function() {
@@ -87,7 +87,7 @@ describe("table-tabular-data", function() {
         start: $('#db1').get(),
         end: $('#db3').get()
       }
-      expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.false
+      expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.false
     })
 
     it("partial selection should be outside the table", function() {
@@ -95,7 +95,7 @@ describe("table-tabular-data", function() {
         start: $('#td3b').get(),
         end: $('#db3').get()
       }
-      expect(tabular._isSelectionInsideTable(domSelectionRange)).to.be.false
+      expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.false
     })
   })
 

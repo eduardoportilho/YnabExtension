@@ -1,4 +1,4 @@
-import table from './table-tabular-data'
+import table from './data_extractors/table-extractor'
 import div from './div-tabular-data'
 /**
  * @typedef {TabularData} Table data.

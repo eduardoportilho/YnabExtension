@@ -123,8 +123,8 @@ function getHeaderDataFromSelection(domSelectionRange) {
 
 module.exports = {
   getTabularDataFromSelection: getTabularDataFromSelection,
+  isSelectionInsideTable: isSelectionInsideTable,
   //private methods exposed for testing only
-  _isSelectionInsideTable: isSelectionInsideTable,
   _getTableDataFromSelection: getTableDataFromSelection,
   _getHeaderDataFromSelection: getHeaderDataFromSelection,
 }
