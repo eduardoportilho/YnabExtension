@@ -9,7 +9,7 @@ function buildCsv(transactions) {
         transaction.date,
         clearCsvString(transaction.payee),
         '',
-        '',
+        transaction.memo,
         transaction.outflow,
         transaction.inflow
       ].join(',')

@@ -109,6 +109,7 @@ describe('transaction-factory', () => {
         {
           date: '31/01/2017',
           payee: 'Payee 1',
+          memo: '',
           inflow: '12.30',
           outflow: ''
         }

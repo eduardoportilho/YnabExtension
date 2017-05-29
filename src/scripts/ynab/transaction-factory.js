@@ -2,11 +2,12 @@
  * @typedef {YnabTx} YNAB transaction
  * @property {string} date - Date in DD/MM/YYYY format.
  * @property {string} payee - Payee.
+ * @property {string} memo - Memo.
  * @property {string} inflow - Inflow with 2 decimal places (could be negative).
  * @property {string} outflow - Outflow with 2 decimal places (could be negative).
  */
 
-import {date, num} from 'jsturbo'
+import {date, num, str} from 'jsturbo'
 import columnFinder from './column-finder'
 
   /**
@@ -42,6 +43,7 @@ function buildTransaction(rowValues, columnInfo) {
   ynabTx.date = getDate(rowValues, columnInfo)
   ynabTx.payee = getPayee(rowValues, columnInfo)
   ynabTx.inflow = getInflow(rowValues, columnInfo)
+  ynabTx.memo = getMemo(rowValues, columnInfo)
   ynabTx.outflow = '' // Ignore outflow, using negative inflow instead
   return ynabTx
 }
@@ -72,6 +74,19 @@ function getInflow (rowValues, columnInfo) {
     }
   }
   throw new Error('No inflow column.')
+}
+
+function getMemo (rowValues, columnInfo) {
+  let memo = []
+  for (var i = 0; i < rowValues.length; i++) {
+    if(columnInfo.inflowIndex !== i &&
+      columnInfo.payeeIndex !== i &&
+      columnInfo.dateIndex !== i &&
+      str.containsAlpha(rowValues[i], 1)) {
+      memo.push(rowValues[i])
+    }
+  }
+  return memo.join(';')
 }
 
 module.exports = {
