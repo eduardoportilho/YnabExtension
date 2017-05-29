@@ -15,11 +15,17 @@ function getTabularDataFromSelection(domSelectionRange) {
     if (lastRow.length < 1) {
       lastRow = firstRow
     }
-    let lastRowEl = lastRow.get(0)
 
+    if(lastRow.index() < firstRow.index()) {
+      let temp = lastRow
+      lastRow = firstRow
+      firstRow = temp
+    }
+
+    let lastRowEl = lastRow.get(0)
     var tabularData = []
     var row = firstRow
-    while(row) {
+    while(row && row.get(0)) {
       tabularData.push(getChildrenTextAsArray(row))
       if(row.get(0) === lastRowEl) {
         break

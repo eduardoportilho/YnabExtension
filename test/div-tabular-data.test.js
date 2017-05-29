@@ -80,6 +80,17 @@ describe("div-tabular-data", function() {
           })
       })
 
+      it("should get tabular data from inverted selection", () => {
+        var domSelectionRange = {
+          start: $('#td3c').get(0),
+          end: $('#td1a').get(0)
+        }
+        expect(tabular.getTabularDataFromSelection(domSelectionRange))
+          .to.deep.equal({
+            'data': [['1A','1B','1C'],['2A','2B','2C'],['3A','3B','3C']]
+          })
+      })
+
       it("should get tabular data from a single row", () => {
         var domSelectionRange = {
           start: $('#td1a').get(0),
