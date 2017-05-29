@@ -18,8 +18,9 @@ import ynabExporter from './ynab/exporter'
  */
 var ynabExportSelection = (selectionInfo) => {
   var selectedElements = selection.getSelectedElements(window)
+  var url = window.location.toString()
   try {
-    var ynabCsvString = ynabExporter.generateCsv(selectedElements)
+    var ynabCsvString = ynabExporter.generateCsv(selectedElements, url)
     download.createTextFileForDownload(window, ynabCsvString, 'text/csv')
   } catch (error) {
     displayMessage('Export error', error.message)

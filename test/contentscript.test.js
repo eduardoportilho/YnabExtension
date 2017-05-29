@@ -16,6 +16,11 @@ describe("contentscript", () => {
     selection = td.object(['getSelectedElements'])
     download = td.object(['createTextFileForDownload'])
     ynabExporter = td.object(['generateCsv'])
+    global.window = {
+      location: {
+        toString: () => 'test-url'
+      }
+    }
     contentscript = proxyquire('../src/scripts/contentscript', {
       './utils/ext': {
         runtime: {
@@ -47,7 +52,7 @@ describe("contentscript", () => {
       // given
       td.when(selection.getSelectedElements(td.matchers.anything()))
         .thenReturn('test-selection')
-      td.when(ynabExporter.generateCsv('test-selection'))
+      td.when(ynabExporter.generateCsv('test-selection', 'test-url'))
         .thenReturn('test-csv')
 
       // when
@@ -65,7 +70,7 @@ describe("contentscript", () => {
       // given
       td.when(selection.getSelectedElements(td.matchers.anything()))
         .thenReturn('test-selection')
-      td.when(ynabExporter.generateCsv('test-selection'))
+      td.when(ynabExporter.generateCsv('test-selection', 'test-url'))
         .thenThrow(new Error('Test error'))
 
       // when
@@ -95,7 +100,7 @@ describe("contentscript", () => {
 
       // then
       td.verify(selection.getSelectedElements(td.matchers.anything()))
-      td.verify(ynabExporter.generateCsv(td.matchers.anything()))
+      td.verify(ynabExporter.generateCsv(td.matchers.anything(), 'test-url'))
       td.verify(download.createTextFileForDownload(td.matchers.anything(), td.matchers.anything(), 'text/csv'))
     })
     

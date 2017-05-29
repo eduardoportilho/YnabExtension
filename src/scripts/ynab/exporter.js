@@ -7,10 +7,11 @@ import postProcessors from './processors/post-processors.js'
 /**
  * Extract YNAB data from the selection and put it on a CSV string.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
+ * @param  {String} currentUrl - Current tab url.
  * @return {string} CSV string with YNAB data.
  * @throws {Error} If no YNAB data was found in the selection.
  */
-function generateCsv(domSelectionRange) {
+function generateCsv(domSelectionRange, currentUrl) {
   let tabularData = tabular.getTabularDataFromSelection(domSelectionRange)
   let columnInfo = columnFinder.getColumnInfo(tabularData, domSelectionRange)
   var transactions = transactionFactory.createTransactions(tabularData, columnInfo)
