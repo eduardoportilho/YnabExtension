@@ -2,12 +2,6 @@ import {expect} from 'chai'
 import csvBuilder from '../src/scripts/ynab/csv-builder'
 
 describe("csv-builder", () => {
-  describe("clearCsvString", () => {
-    it("should remove commas", () => {
-      expect(csvBuilder._clearCsvString('A string, with, commas')).not.to.contain(',')
-    })
-  })
-
   describe("buildCsv", () => {
     it("should build CSV with transactions", () => {
       let trxs = [

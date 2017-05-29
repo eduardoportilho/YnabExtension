@@ -7,7 +7,7 @@
 import {obj, str} from 'jsturbo'
 
 /**
- * Check if the processor should be applyed.
+ * Check if the processor should be applied.
  * @param {YnabTx[]} transactions - Transactions before processing.
  * @param {YnabTxStats} stats     - Transactions statistics.
  * @return {Boolean}
@@ -28,7 +28,7 @@ function processTransactions(transactions, stats) {
 
 /**
  * Invert the signal of a transaction amount
- * @param  {YnabTx} transaction - Transaction.
+ * @param  {YnabTx} ynabTx - Transaction.
  * @return {YnabTx} Transaction with the inverted amount.
  */
 function invertTxAmountSignal(ynabTx) {
@@ -60,6 +60,6 @@ module.exports = {
   shouldApply: shouldApply,
   processTransactions: processTransactions,
   //private methods exposed for testing only
-  invertTxAmountSignal: invertTxAmountSignal,
-  invertNumberStringSignal: invertNumberStringSignal
+  _invertTxAmountSignal: invertTxAmountSignal,
+  _invertNumberStringSignal: invertNumberStringSignal
 }

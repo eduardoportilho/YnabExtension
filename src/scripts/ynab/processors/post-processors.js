@@ -1,12 +1,14 @@
 import transactionStats from '../transaction-stats'
 import invertCreditCard from './invert-credit-card'
+import clearTextValues from './clear-text-values'
 
 /**
  * List of post-processors
  * @type {Object}
  */
 const POST_PROCESSORS = [
-  invertCreditCard
+  invertCreditCard,
+  clearTextValues
 ]
 
 /**

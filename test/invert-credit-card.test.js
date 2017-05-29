@@ -17,30 +17,30 @@ describe("invert-credit-card.js", () => {
 
   describe("invertNumberStringSignal", () => {
     it("should invert positive numbers ", () => {
-      expect(invertCreditCard.invertNumberStringSignal('12.34')).to.equal('-12.34')
-      expect(invertCreditCard.invertNumberStringSignal('10')).to.equal('-10')
+      expect(invertCreditCard._invertNumberStringSignal('12.34')).to.equal('-12.34')
+      expect(invertCreditCard._invertNumberStringSignal('10')).to.equal('-10')
     })
     it("should invert negative numbers", () => {
-      expect(invertCreditCard.invertNumberStringSignal('-12.34')).to.equal('12.34')
-      expect(invertCreditCard.invertNumberStringSignal('-10')).to.equal('10')
+      expect(invertCreditCard._invertNumberStringSignal('-12.34')).to.equal('12.34')
+      expect(invertCreditCard._invertNumberStringSignal('-10')).to.equal('10')
     })
     it("should not invert zero", () => {
-      expect(invertCreditCard.invertNumberStringSignal('0.00')).to.equal('0.00')
-      expect(invertCreditCard.invertNumberStringSignal('0')).to.equal('0')
+      expect(invertCreditCard._invertNumberStringSignal('0.00')).to.equal('0.00')
+      expect(invertCreditCard._invertNumberStringSignal('0')).to.equal('0')
     })
   })
   
   describe("invertTxAmountSignal", () => {
     it("should invert inflow ", () => {
-      expect(invertCreditCard.invertTxAmountSignal({inflow: '12.34'})).to.eql({inflow: '-12.34'})
-      expect(invertCreditCard.invertTxAmountSignal({inflow: '-12.34'})).to.eql({inflow: '12.34'})
+      expect(invertCreditCard._invertTxAmountSignal({inflow: '12.34'})).to.eql({inflow: '-12.34'})
+      expect(invertCreditCard._invertTxAmountSignal({inflow: '-12.34'})).to.eql({inflow: '12.34'})
     })
     it("should invert outflow ", () => {
-      expect(invertCreditCard.invertTxAmountSignal({outflow: '12.34'})).to.eql({outflow: '-12.34'})
-      expect(invertCreditCard.invertTxAmountSignal({outflow: '-12.34'})).to.eql({outflow: '12.34'})
+      expect(invertCreditCard._invertTxAmountSignal({outflow: '12.34'})).to.eql({outflow: '-12.34'})
+      expect(invertCreditCard._invertTxAmountSignal({outflow: '-12.34'})).to.eql({outflow: '12.34'})
     })
     it("should not invert empty tx ", () => {
-      expect(invertCreditCard.invertTxAmountSignal({date: '10/10/2017'})).to.eql({date: '10/10/2017'})
+      expect(invertCreditCard._invertTxAmountSignal({date: '10/10/2017'})).to.eql({date: '10/10/2017'})
     })
   })
   

@@ -7,7 +7,7 @@ function buildCsv(transactions) {
   let rows = transactions.map((transaction) => {
       return [
         transaction.date,
-        clearCsvString(transaction.payee),
+        transaction.payee,
         '',
         transaction.memo,
         transaction.outflow,
@@ -17,17 +17,6 @@ function buildCsv(transactions) {
   return 'Date,Payee,Category,Memo,Outflow,Inflow\n' + rows.join('\n')
 }
 
-/**
- * Remove invalid CSV characters.
- * @param  {string} string Original string.
- * @return {string} Clean string.
- */
-function clearCsvString(string) {
-  return string.replace(/,/g, ';')
-}
-
 module.exports = {
-  buildCsv: buildCsv,
-  //private methods exposed for testing only
-  _clearCsvString: clearCsvString
+  buildCsv: buildCsv
 }
