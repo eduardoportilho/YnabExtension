@@ -41,6 +41,15 @@ function getColumnInfo(tabularData) {
   throw Error('Could not find column information.')
 }
 
+// TODO Docblok
+function getColumnInfoFromRow(rowValues) {
+  let columnInfo = findIndexesFromValues([rowValues])
+  if (isValid(columnInfo)) {
+    return columnInfo
+  }
+  throw Error('Could not find column information.')
+}
+
 /**
  * Find the index of each header type based on the header labels.
  * @param {string[]} tableHeaderLabels - Labels on the table headers.
@@ -177,6 +186,7 @@ function isCurrencyNumber(text) {
 
 module.exports = {
   getColumnInfo: getColumnInfo,
+  getColumnInfoFromRow: getColumnInfoFromRow,
   //private methods exposed for testing only
   _containsIgnoringCase: containsIgnoringCase,
   _isValid: isValid,

@@ -126,7 +126,7 @@ describe('transaction-factory', () => {
       }
       td.replace(console, 'log')
       expect(transactionFactory.createTransactions(tabularData, columnInfo)).to.eql([])
-      td.verify(console.log(td.matchers.contains('Ignoring invalid row')))
+      td.verify(console.log(td.matchers.contains('Invalid row')))
       td.reset()
     })
   })

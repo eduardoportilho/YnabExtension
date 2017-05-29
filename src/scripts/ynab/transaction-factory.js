@@ -7,6 +7,7 @@
  */
 
 import {date, num} from 'jsturbo'
+import columnFinder from './column-finder'
 
   /**
    * Build YNAB transactions from the tabular data based on the column info.
@@ -23,7 +24,14 @@ function createTransactions(tabularData, columnInfo) {
       ynabTransaction = buildTransaction(rowValues, columnInfo)
       ynabTxs.push(ynabTransaction)
     } catch (any) {
-      console.log("Ignoring invalid row: row-content=[" + rowValues + "] message=[" + any.message + "]")
+      try {
+        console.log(`Invalid row, will try again: [${rowValues}] message=[${any.message}]`)
+        let rowColumnInfo = columnFinder.getColumnInfoFromRow(rowValues)
+        ynabTransaction = buildTransaction(rowValues, rowColumnInfo)
+        ynabTxs.push(ynabTransaction)
+      } catch (any) {
+        console.log(`2nd try failed, ignoring row: message=[${any.message}]`)
+      }
     }
   }
   return ynabTxs
@@ -57,7 +65,8 @@ function getPayee (rowValues, columnInfo) {
 
 function getInflow (rowValues, columnInfo) {
   if (columnInfo.inflowIndex >= 0) {
-    let inflow = num.toNumber(rowValues[columnInfo.inflowIndex])
+    let inflowValue = rowValues[columnInfo.inflowIndex]
+    let inflow = num.toNumber(inflowValue)
     if (num.isNumber(inflow)) {
       return num.format(inflow, {'decimalPlaces': 2})
     }

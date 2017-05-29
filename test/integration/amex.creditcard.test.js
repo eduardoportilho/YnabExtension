@@ -46,10 +46,10 @@ describe('[Integration] Amex creditcard', () => {
     // then:
     let expectedCSV = `Date,Payee,Category,Memo,Outflow,Inflow
 29/04/2017,ICA KVANTUM FLEN 020350 FLEN,,,,-805.62
-23/04/2017,ICA KVANTUM FLEN 020350 FLEN RA,,,,-526.18
-20/04/2017,CLAS OHLSON STOCKHOLM,,,,-394.00
-18/04/2017,BETALNING MOTTAGEN TACK,,,,25221.63
-11/04/2017,AIRBNB * HM5BAX5KPW AIR SAN FRANCISCO,,,,13653.37`
+23/04/2017,ICA KVANTUM FLEN 020350 FLEN,,,,-526.18
+20/04/2017,CLAS OHLSON             STOCKHOLM,,,,-394.00
+18/04/2017,BETALNING MOTTAGEN; TACK,,,,25221.63
+11/04/2017,AIRBNB * HM5BAX5KPW AIR SAN FRANCISCO,,,,-13653.37`
 
     td.verify(displayErrorMessageMock(), {times: 0, ignoreExtraArgs: true})
     td.verify(downloadMock.createTextFileForDownload(global.window, expectedCSV, 'text/csv'))
