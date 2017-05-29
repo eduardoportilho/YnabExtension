@@ -1,5 +1,5 @@
 import table from './data_extractors/table-extractor'
-import div from './div-tabular-data'
+import div from './data_extractors/dom-extractor'
 /**
  * @typedef {TabularData} Table data.
  * @property {string[][]} data - Table data.
