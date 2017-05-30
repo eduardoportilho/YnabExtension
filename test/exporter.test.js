@@ -3,7 +3,7 @@ import proxyquire from 'proxyquire'
 import td from 'testdouble'
 
 describe("exporter", () => {
-  var tabular
+  var baseExtractor
   var columnFinder
   var transactionFactory
   var csvBuilder
@@ -11,18 +11,18 @@ describe("exporter", () => {
   var exporter
 
   beforeEach(() => {
-    tabular = td.object(['getTabularDataFromSelection'])
+    baseExtractor = td.object(['getTabularDataFromSelection'])
     columnFinder = td.object(['getColumnInfo'])
     transactionFactory = td.object(['createTransactions'])
     csvBuilder = td.object(['buildCsv'])
     postProcessors = td.object(['processTransactions'])
 
     exporter = proxyquire('../src/scripts/ynab/exporter.js', {
-      '../utils/tabular-data': tabular,
+      '../utils/data_extractors/base-extractor': baseExtractor,
       './column-finder': columnFinder,
       './transaction-factory': transactionFactory,
       './csv-builder': csvBuilder,
-      './processors/post-processors.js': postProcessors
+      './processors/post-processors': postProcessors
     })
   })
 
@@ -41,7 +41,7 @@ describe("exporter", () => {
       let processedTransactions = 'processed-transactions'
       let csv = 'test-csv'
 
-      td.when(tabular.getTabularDataFromSelection(domSelectionRange, currentUrl))
+      td.when(baseExtractor.getTabularDataFromSelection(domSelectionRange, currentUrl))
         .thenReturn(tabularData)
       td.when(columnFinder.getColumnInfo(tabularData, domSelectionRange))
         .thenReturn(columnInfo)

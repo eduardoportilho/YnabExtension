@@ -4,7 +4,7 @@ import {expect} from 'chai'
 import tabular from '../src/scripts/utils/data_extractors/dom-extractor'
 import $ from 'jquery'
 
-describe("div-tabular-data", function() {
+describe("dom-extractor", function() {
   describe("with vanilla HTML", function() {
     before(function () {
       document.body.innerHTML = `<div id="container">

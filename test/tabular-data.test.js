@@ -1,7 +1,7 @@
 import {expect} from 'chai'
-import tabular from '../src/scripts/utils/tabular-data'
+import baseExtractor from '../src/scripts/utils/data_extractors/base-extractor'
 
-describe('base-tabular-data', function() {
+describe('base-extractor', function() {
 
   describe('normalizeTabularData', function() {
     it('should normalize tabular data with no empty cells', function() {
@@ -12,7 +12,7 @@ describe('base-tabular-data', function() {
           ['A', 'B']
         ]
       }
-      expect(tabular._normalizeTabularData(data))
+      expect(baseExtractor._normalizeTabularData(data))
         .to.deep.equal({
           data:  [
             ['A', 'B', 'C', 'D'],
@@ -29,7 +29,7 @@ describe('base-tabular-data', function() {
           ['A', 'B']
         ]
       }
-      expect(tabular._normalizeTabularData(data))
+      expect(baseExtractor._normalizeTabularData(data))
         .to.deep.equal({
           data:  [
             ['A', '', 'B', '', 'C'],
@@ -48,7 +48,7 @@ describe('base-tabular-data', function() {
         {empty: false}
       ]
 
-      expect(tabular._padRow(row, 4, columnInfo))
+      expect(baseExtractor._padRow(row, 4, columnInfo))
         .to.deep.equal(['A', 'B', '', ''])
     })
 
@@ -61,7 +61,7 @@ describe('base-tabular-data', function() {
         {empty: true}
       ]
 
-      expect(tabular._padRow(row, 4, columnInfo))
+      expect(baseExtractor._padRow(row, 4, columnInfo))
         .to.deep.equal(['', 'A', 'B', ''])
     })
 
@@ -74,7 +74,7 @@ describe('base-tabular-data', function() {
         {empty: false}
       ]
 
-      expect(tabular._padRow(row, 4, columnInfo))
+      expect(baseExtractor._padRow(row, 4, columnInfo))
         .to.deep.equal(['A', '', '', 'B'])
     })
 
