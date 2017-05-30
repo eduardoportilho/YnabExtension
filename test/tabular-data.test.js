@@ -1,7 +1,20 @@
 import {expect} from 'chai'
-import baseExtractor from '../src/scripts/utils/data_extractors/base-extractor'
+import proxyquire from 'proxyquire'
+import td from 'testdouble'
 
 describe('base-extractor', function() {
+  let baseExtractor
+
+  beforeEach(() => {
+    baseExtractor = proxyquire('../src/scripts/utils/data_extractors/base-extractor', {
+      './table-extractor': td.object(),
+      './dom-extractor': td.object(['getSelectedElements'])
+    })
+  })
+
+  afterEach(() => {
+    td.reset()
+  })
 
   describe('normalizeTabularData', function() {
     it('should normalize tabular data with no empty cells', function() {
