@@ -36,6 +36,7 @@ describe("contentscript", () => {
 
   afterEach(() => {
     td.reset()
+    global.window = undefined
   })
 
   describe("component initialization", () => {

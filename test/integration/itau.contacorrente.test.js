@@ -31,6 +31,10 @@ xdescribe('[Integration] Itaú conta corrente', () => {
     })
   })
 
+  afterEach(() => {
+    global.window = undefined
+  })
+
   it('should read content and generate CSV', () => {
     // given:
     global.window.getSelection = () => {

@@ -31,6 +31,10 @@ describe('[Integration] Amex creditcard', () => {
     })
   })
 
+  afterEach(() => {
+    global.window = undefined
+  })
+
   it('should read content and generate CSV', () => {
     // given:
     global.window.getSelection = () => {
