@@ -12,7 +12,7 @@ import postProcessors from './processors/post-processors.js'
  * @throws {Error} If no YNAB data was found in the selection.
  */
 function generateCsv(domSelectionRange, currentUrl) {
-  let tabularData = tabular.getTabularDataFromSelection(domSelectionRange)
+  let tabularData = tabular.getTabularDataFromSelection(domSelectionRange, currentUrl)
   let columnInfo = columnFinder.getColumnInfo(tabularData, domSelectionRange)
   var transactions = transactionFactory.createTransactions(tabularData, columnInfo)
   transactions = postProcessors.processTransactions(transactions)

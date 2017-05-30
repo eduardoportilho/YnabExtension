@@ -34,13 +34,14 @@ describe("exporter", () => {
     it("should call components", () => {
       // given: 
       let domSelectionRange = 'test-domSelectionRange'
+      let currentUrl = 'test-url'
       let tabularData = 'test-tabularData'
       let columnInfo = 'test-columnInfo'
       let transactions = 'test-transactions'
       let processedTransactions = 'processed-transactions'
       let csv = 'test-csv'
 
-      td.when(tabular.getTabularDataFromSelection(domSelectionRange))
+      td.when(tabular.getTabularDataFromSelection(domSelectionRange, currentUrl))
         .thenReturn(tabularData)
       td.when(columnFinder.getColumnInfo(tabularData, domSelectionRange))
         .thenReturn(columnInfo)
@@ -52,7 +53,7 @@ describe("exporter", () => {
         .thenReturn(csv)
 
       // when, then:
-      expect(exporter.generateCsv(domSelectionRange)).to.equal(csv)
+      expect(exporter.generateCsv(domSelectionRange, currentUrl)).to.equal(csv)
     })
   })
 })

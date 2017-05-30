@@ -9,10 +9,11 @@ import div from './data_extractors/dom-extractor'
 /**
  * Extract tabular (rows and columns) from the selection.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
+ * @param  {String} currentUrl - Current tab url.
  * @return {TabularData} Tabular data.
  * @throws {Error} If no tabular data was found in the selection.
  */
-function getTabularDataFromSelection(domSelectionRange) {
+function getTabularDataFromSelection(domSelectionRange, currentUrl) {
   var tabularData
   try {
     tabularData = table.getTabularDataFromSelection(domSelectionRange)
