@@ -2,7 +2,6 @@
 import 'jsdom-global/register'
 import {expect} from 'chai'
 import tabular from '../src/scripts/utils/data_extractors/table-extractor'
-import $ from 'jquery'
 
 describe("table-extractor", function() {
 
@@ -44,8 +43,8 @@ describe("table-extractor", function() {
   describe("getTabularDataFromSelection", function() {
     it("should get tabular data", function() {
       var domSelectionRange = {
-        start: $('#td1a').get(),
-        end: $('#td3c').get()
+        start: document.querySelector('#td1a'),
+        end: document.querySelector('#td3c')
       }
       expect(tabular.getTabularDataFromSelection(domSelectionRange))
         .to.deep.equal({
@@ -56,8 +55,8 @@ describe("table-extractor", function() {
 
     it("should throw when data not found", function() {
       var domSelectionRange = {
-        start: $('#db1').get(),
-        end: $('#db1').get()
+        start: document.querySelector('#db1'),
+        end: document.querySelector('#db1')
       }
       expect(() => {
         tabular.getTabularDataFromSelection(domSelectionRange)
@@ -68,32 +67,32 @@ describe("table-extractor", function() {
   describe("isSelectionInsideTable", function() {
     it("selection should be inside the table", function() {
       var domSelectionRange = {
-        start: $('#td1a').get(),
-        end: $('#td1b').get()
+        start: document.querySelector('#td1a'),
+        end: document.querySelector('#td1b')
       }
       expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.true
     })
 
     it("row selection should be inside the table", function() {
       var domSelectionRange = {
-        start: $('#tr2').get(),
-        end: $('#tr3').get()
+        start: document.querySelector('#tr2'),
+        end: document.querySelector('#tr3')
       }
       expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.true
     })
 
     it("selection should be outside the table", function() {
       var domSelectionRange = {
-        start: $('#db1').get(),
-        end: $('#db3').get()
+        start: document.querySelector('#db1'),
+        end: document.querySelector('#db3')
       }
       expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.false
     })
 
     it("partial selection should be outside the table", function() {
       var domSelectionRange = {
-        start: $('#td3b').get(),
-        end: $('#db3').get()
+        start: document.querySelector('#td3b'),
+        end: document.querySelector('#db3')
       }
       expect(tabular.isSelectionInsideTable(domSelectionRange)).to.be.false
     })
@@ -102,8 +101,8 @@ describe("table-extractor", function() {
   describe("getTableDataFromSelection", function() {
     it("should get data from parent rows", function() {
       var domSelectionRange = {
-        start: $('#td1c').get(),
-        end: $('#td2b').get()
+        start: document.querySelector('#td1c'),
+        end: document.querySelector('#td2b')
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
@@ -111,8 +110,8 @@ describe("table-extractor", function() {
 
     it("should get data from row selection", function() {
       var domSelectionRange = {
-        start: $('#tr2').get(),
-        end: $('#tr3').get()
+        start: document.querySelector('#tr2'),
+        end: document.querySelector('#tr3')
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['2A','2B','2C'],['3A','3B','3C']])
@@ -120,8 +119,8 @@ describe("table-extractor", function() {
 
     it("should get data from inverted selection", function() {
       var domSelectionRange = {
-        start: $('#td2b').get(),
-        end: $('#td1c').get()
+        start: document.querySelector('#td2b'),
+        end: document.querySelector('#td1c')
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
@@ -129,8 +128,8 @@ describe("table-extractor", function() {
 
     it("should get data from partial selection (end outside table)", function() {
       var domSelectionRange = {
-        start: $('#td2b').get(),
-        end: $('#db3').get()
+        start: document.querySelector('#td2b'),
+        end: document.querySelector('#db3')
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['2A','2B','2C'],['3A','3B','3C']])
@@ -138,8 +137,8 @@ describe("table-extractor", function() {
 
     it("should get data from partial selection (start outside table)", function() {
       var domSelectionRange = {
-        start: $('#da1').get(),
-        end: $('#td2b').get()
+        start: document.querySelector('#da1'),
+        end: document.querySelector('#td2b')
       }
       expect(tabular._getTableDataFromSelection(domSelectionRange))
         .to.deep.equal([['1A','1B','1C'],['2A','2B','2C']])
@@ -147,8 +146,8 @@ describe("table-extractor", function() {
 
     it("should throw when table not found", function() {
       var domSelectionRange = {
-        start: $('#db1').get(),
-        end: $('#db1').get()
+        start: document.querySelector('#db1'),
+        end: document.querySelector('#db1')
       }
       expect(() => {
         tabular._getTableDataFromSelection(domSelectionRange)
@@ -159,8 +158,8 @@ describe("table-extractor", function() {
   describe("getHeaderDataFromSelection", function() {
     it("should find th headers", function() {
       var domSelectionRange = {
-        start: $('#td1c').get(),
-        end: $('#td2b').get()
+        start: document.querySelector('#td1c'),
+        end: document.querySelector('#td2b')
       }
       expect(tabular._getHeaderDataFromSelection(domSelectionRange))
         .to.deep.equal(['Col A','Col B','Col C'])
@@ -180,8 +179,8 @@ describe("table-extractor", function() {
       '</tr>' +
     '</table>'
       var domSelectionRange = {
-        start: $('#td1a').get(),
-        end: $('#td1a').get()
+        start: document.querySelector('#td1a'),
+        end: document.querySelector('#td1a')
       }
       expect(tabular._getHeaderDataFromSelection(domSelectionRange))
         .to.deep.equal(['Col XA','Col XB','Col XC'])
@@ -189,8 +188,8 @@ describe("table-extractor", function() {
 
     it("should return undefined when table not found", function() {
       var domSelectionRange = {
-        start: $('#db1').get(),
-        end: $('#db1').get()
+        start: document.querySelector('#db1'),
+        end: document.querySelector('#db1')
       }
       expect(tabular._getHeaderDataFromSelection(domSelectionRange)).to.be.undefined
     })
@@ -201,8 +200,8 @@ describe("table-extractor", function() {
         '<thead id="d1"></thead>' +
       '</table>'
       var domSelectionRange = {
-        start: $('#d1').get(),
-        end: $('#d1').get()
+        start: document.querySelector('#d1'),
+        end: document.querySelector('#d1')
       }
       expect(tabular._getHeaderDataFromSelection(domSelectionRange)).to.be.undefined
     })
