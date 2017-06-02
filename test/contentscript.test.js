@@ -16,11 +16,12 @@ describe("contentscript", () => {
     selection = td.object(['getSelectedElements'])
     download = td.object(['createTextFileForDownload'])
     ynabExporter = td.object(['generateCsv'])
-    global.window = {
+    td.replace(global, 'window', {
       location: {
         toString: () => 'test-url'
       }
-    }
+    })
+
     contentscript = proxyquire('../src/scripts/contentscript', {
       './utils/ext': {
         runtime: {
@@ -36,7 +37,6 @@ describe("contentscript", () => {
 
   afterEach(() => {
     td.reset()
-    global.window = undefined
   })
 
   describe("component initialization", () => {

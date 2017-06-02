@@ -3,10 +3,8 @@ import path from 'path'
 import { expect } from 'chai'
 import proxyquire from 'proxyquire'
 import td from 'testdouble'
-import jsdom from 'jsdom'
 
 describe('[Integration] Nordea creditcard', () => {
-  var document
   var downloadMock
   var displayErrorMessageMock
   var contentScript
@@ -14,8 +12,7 @@ describe('[Integration] Nordea creditcard', () => {
   beforeEach(() => {
     let htmlPath = path.join(__dirname, 'fixtures', 'nordea.creditcard.html')
     let html = fs.readFileSync(htmlPath, 'utf8')
-    document = jsdom.jsdom(html)
-    global.window = document.defaultView
+    document.body.innerHTML = html
     downloadMock = td.object(['createTextFileForDownload'])
     displayErrorMessageMock = td.function('Display error')
     contentScript = proxyquire('../../src/scripts/contentscript', {
@@ -30,17 +27,17 @@ describe('[Integration] Nordea creditcard', () => {
   })
 
   afterEach(() => {
-    global.window = undefined
+    td.reset()
   })
 
   it('should read content and generate CSV', () => {
     // given:
-    global.window.getSelection = () => {
+    td.replace(window, 'getSelection', () => {
       return {
         anchorNode: {parentElement: document.querySelector('#selectionStart0')},
         focusNode: {parentElement: document.querySelector('#selectionEnd0')}
       }
-    }
+    })
 
     // when:
     contentScript.ynabExportSelection()

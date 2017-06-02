@@ -3,10 +3,8 @@ import path from 'path'
 import { expect } from 'chai'
 import proxyquire from 'proxyquire'
 import td from 'testdouble'
-import jsdom from 'jsdom'
 
 xdescribe('[Integration] Itaú conta corrente', () => {
-  var document
   var downloadMock
   var displayErrorMessageMock
   var contentScript
@@ -14,8 +12,7 @@ xdescribe('[Integration] Itaú conta corrente', () => {
   beforeEach(() => {
     let htmlPath = path.join(__dirname, 'fixtures', 'itau.contacorrente.html')
     let html = fs.readFileSync(htmlPath, 'utf8')
-    document = jsdom.jsdom(html)
-    global.window = document.defaultView
+    document.body.innerHTML = html
     downloadMock = td.object(['createTextFileForDownload'])
     displayErrorMessageMock = td.function('Display error')
 
@@ -32,17 +29,17 @@ xdescribe('[Integration] Itaú conta corrente', () => {
   })
 
   afterEach(() => {
-    global.window = undefined
+    td.reset()
   })
 
   it('should read content and generate CSV', () => {
     // given:
-    global.window.getSelection = () => {
+    td.replace(window, 'getSelection', () => {
       return {
         anchorNode: {parentElement: document.querySelector('#selectionStart0')},
         focusNode: {parentElement: document.querySelector('#selectionEnd0')}
       }
-    }
+    })
 
     // when:
     contentScript.ynabExportSelection()
