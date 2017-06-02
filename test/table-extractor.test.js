@@ -1,5 +1,3 @@
-// https://github.com/rstacruz/jsdom-global: inject document, window and other DOM API into your Node.js environment.
-import 'jsdom-global/register'
 import {expect} from 'chai'
 import tabular from '../src/scripts/utils/data_extractors/table-extractor'
 
