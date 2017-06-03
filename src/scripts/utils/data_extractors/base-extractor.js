@@ -1,5 +1,5 @@
-import table from './table-extractor'
-import div from './dom-extractor'
+import tableExtractor from './table-extractor'
+import domExtractor from './dom-extractor'
 /**
  * @typedef {TabularData} Table data.
  * @property {string[][]} data - Table data.
@@ -16,14 +16,18 @@ import div from './dom-extractor'
 function getTabularDataFromSelection(domSelectionRange, currentUrl) {
   var tabularData
   try {
-    tabularData = table.getTabularDataFromSelection(domSelectionRange)
-  } catch(any) {}
+    tabularData = tableExtractor.getTabularDataFromSelection(domSelectionRange)
+  } catch(any) {
+    console.log('Could not get tabular data with table extractor', any)
+  }
 
   try {
     if (tabularData === undefined) {
-      tabularData = div.getTabularDataFromSelection(domSelectionRange)
+      tabularData = domExtractor.getTabularDataFromSelection(domSelectionRange)
     }
-  } catch(any) {}
+  } catch(any) {
+    console.log('Could not get tabular data with DOM extractor', any)
+  }
 
   if (tabularData === undefined) {
     throw Error('Could not find tabular data.')
