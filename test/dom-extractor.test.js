@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import tabular from '../src/scripts/utils/data_extractors/dom-extractor'
+import domExtractor from '../src/scripts/utils/data_extractors/dom-extractor'
 import $ from 'jquery'
 
 describe("dom-extractor", function() {
@@ -33,13 +33,13 @@ describe("dom-extractor", function() {
       it("should get closest common ancestor", () => {
         let nodeA = $('#td2c')
         let nodeB = $('#td3a')
-        let closestCommonAncestor = tabular._getClosestCommonAncestor(nodeA, nodeB)
+        let closestCommonAncestor = domExtractor._getClosestCommonAncestor(nodeA, nodeB)
         expect(closestCommonAncestor.attr('id')).to.equal('container')
       })
       it("should get closest common ancestor on same row", () => {
         let nodeA = $('#td2c')
         let nodeB = $('#td2a')
-        let closestCommonAncestor = tabular._getClosestCommonAncestor(nodeA, nodeB)
+        let closestCommonAncestor = domExtractor._getClosestCommonAncestor(nodeA, nodeB)
         expect(closestCommonAncestor.attr('id')).to.equal('tr2')
       })
     })
@@ -48,21 +48,21 @@ describe("dom-extractor", function() {
       it("should get first child that contains element", () => {
         let parent = $('#container')
         let containedDescendant = $('#span1b')
-        let firstChild = tabular._getFirstChildThatContains(parent, containedDescendant)
+        let firstChild = domExtractor._getFirstChildThatContains(parent, containedDescendant)
         expect(firstChild.attr('id')).to.equal('tr1')
       })
 
       it("should return undefined if not found", () => {
         let parent = $('#tr2')
         let containedDescendant = $('#span1b')
-        let firstChild = tabular._getFirstChildThatContains(parent, containedDescendant)
+        let firstChild = domExtractor._getFirstChildThatContains(parent, containedDescendant)
         expect(firstChild.attr('id')).to.be.undefined
       })
     })
 
     describe("getChildrenTextAsArray", () => {
       it("should get children text as array", () => {
-        expect(tabular._getChildrenTextAsArray($('#tr1'))).to.deep.equal(['1A', '1B', '1C'])
+        expect(domExtractor._getChildrenTextAsArray($('#tr1'))).to.deep.equal(['1A', '1B', '1C'])
       })
     })
 
@@ -72,7 +72,7 @@ describe("dom-extractor", function() {
           start: $('#td1a').get(0),
           end: $('#td3c').get(0)
         }
-        expect(tabular.getTabularDataFromSelection(domSelectionRange))
+        expect(domExtractor.getTabularDataFromSelection(domSelectionRange))
           .to.deep.equal({
             'data': [['1A','1B','1C'],['2A','2B','2C'],['3A','3B','3C']]
           })
@@ -83,7 +83,7 @@ describe("dom-extractor", function() {
           start: $('#td3c').get(0),
           end: $('#td1a').get(0)
         }
-        expect(tabular.getTabularDataFromSelection(domSelectionRange))
+        expect(domExtractor.getTabularDataFromSelection(domSelectionRange))
           .to.deep.equal({
             'data': [['1A','1B','1C'],['2A','2B','2C'],['3A','3B','3C']]
           })
@@ -94,10 +94,16 @@ describe("dom-extractor", function() {
           start: $('#td1a').get(0),
           end: $('#td1c').get(0)
         }
-        expect(tabular.getTabularDataFromSelection(domSelectionRange))
+        expect(domExtractor.getTabularDataFromSelection(domSelectionRange))
           .to.deep.equal({
             'data': [['1A','1B','1C']]
           })
+      })
+
+      it("should throw on invalid selection", () => {
+        expect(() => {
+          domExtractor.getTabularDataFromSelection(null)
+        }).to.throw('Could not find tabular data')
       })
     })
   })
@@ -126,7 +132,7 @@ describe("dom-extractor", function() {
 
     describe("getChildrenTextAsArray", () => {
       it("should get children text as array", () => {
-        expect(tabular._getChildrenTextAsArray($('#transaction-xxx'))).to.deep.equal([
+        expect(domExtractor._getChildrenTextAsArray($('#transaction-xxx'))).to.deep.equal([
           '',
           '29 apr',
           'ICA KVANTUM FLEN 020350 FLEN',
