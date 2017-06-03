@@ -41,7 +41,11 @@ function getColumnInfo(tabularData) {
   throw Error('Could not find column information.')
 }
 
-// TODO Docblok
+/**
+ * Find the index of each header type based on the row values.
+ * @param  {string[]} rowValues - Row values.
+ * @return {ColumnInfo} Column information.
+ */
 function getColumnInfoFromRow(rowValues) {
   let columnInfo = findIndexesFromValues([rowValues])
   if (isValid(columnInfo)) {
