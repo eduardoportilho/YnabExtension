@@ -76,6 +76,24 @@ describe("column-finder", () => {
     })
   })
 
+  describe("getColumnInfoFromRow", () => {
+    it("should find indexes from row", () => {
+      expect(columnFinder.getColumnInfoFromRow(
+        ['10/01/2017', 'Restaurant', '100.00']
+      )).to.eql({
+        dateIndex: 0,
+        inflowIndex: 2,
+        payeeIndex: 1
+      })
+    })
+
+    it("should throw on invalid row", () => {
+      expect(() => {
+        columnFinder.getColumnInfoFromRow(['invalid'])
+      }).to.throw('Could not find column information')
+    })
+  })
+
   describe("findIndexesFromValues", () => {
     it("should find indexes from values", () => {
       expect(columnFinder._findIndexesFromValues(
