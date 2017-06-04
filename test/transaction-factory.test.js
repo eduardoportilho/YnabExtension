@@ -1,8 +1,21 @@
 import {expect} from 'chai'
+import proxyquire from 'proxyquire'
 import transactionFactory from '../src/scripts/ynab/transaction-factory'
 import td from 'testdouble'
 
 describe('transaction-factory', () => {
+  let transactionFactory
+  let columnFinder
+
+  beforeEach(() => {    
+    // This is necessary to avoid caching './column-finder', which would break the integration tests
+    proxyquire.noPreserveCache()
+    columnFinder = td.object()
+    transactionFactory  = proxyquire('../src/scripts/ynab/transaction-factory', {
+      './column-finder': columnFinder
+    })
+  })
+
   describe('getInflow', () => {
     it('should read inflow', () => {
       let rowValues = ['whatever', '12.3']
@@ -128,6 +141,7 @@ describe('transaction-factory', () => {
       td.replace(console, 'log')
       expect(transactionFactory.createTransactions(tabularData, columnInfo)).to.eql([])
       td.verify(console.log(td.matchers.contains('Invalid row')))
+      td.verify(console.log(td.matchers.contains('2nd try failed')))
       td.reset()
     })
   })

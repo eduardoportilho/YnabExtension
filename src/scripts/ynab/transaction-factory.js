@@ -26,7 +26,7 @@ function createTransactions(tabularData, columnInfo) {
       ynabTxs.push(ynabTransaction)
     } catch (any) {
       try {
-        console.log(`Invalid row, will try again: [${rowValues}] message=[${any.message}]`)
+        console.log(`Invalid row, will with custom column info: [${rowValues}] message=[${any.message}]`)
         let rowColumnInfo = columnFinder.getColumnInfoFromRow(rowValues)
         ynabTransaction = buildTransaction(rowValues, rowColumnInfo)
         ynabTxs.push(ynabTransaction)
