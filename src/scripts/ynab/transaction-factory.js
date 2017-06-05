@@ -94,5 +94,6 @@ module.exports = {
   //private methods exposed for testing only
   _getInflow: getInflow,
   _getPayee: getPayee,
-  _getDate: getDate
+  _getDate: getDate,
+  _getMemo: getMemo
 }

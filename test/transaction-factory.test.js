@@ -104,6 +104,18 @@ describe('transaction-factory', () => {
     })
   })
   
+  describe('getMemo', () => {
+    it('should store text cols as memo', () => {
+      let rowValues = ['aaa', 'bbb', 'ccc', 'ddd', 'eee']
+      let columnInfo = {
+        dateIndex: 1,
+        payeeIndex: 2,
+        inflowIndex: 3
+      }
+      expect(transactionFactory._getMemo(rowValues, columnInfo)).to.equal('aaa;eee')
+    })
+  })
+  
   describe('createTransactions', () => {
     afterEach(() => {
       td.reset()
