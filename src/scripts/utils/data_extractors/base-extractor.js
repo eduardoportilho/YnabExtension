@@ -14,26 +14,34 @@ import domExtractor from './dom-extractor'
  * @throws {Error} If no tabular data was found in the selection.
  */
 function getTabularDataFromSelection(domSelectionRange, currentUrl) {
-  var tabularData
-  try {
-    tabularData = tableExtractor.getTabularDataFromSelection(domSelectionRange)
-  } catch(any) {
-    console.log('Could not get tabular data with table extractor', any)
-  }
-
-  try {
-    if (tabularData === undefined) {
-      tabularData = domExtractor.getTabularDataFromSelection(domSelectionRange)
-    }
-  } catch(any) {
-    console.log('Could not get tabular data with DOM extractor', any)
-  }
-
+  var tabularData = extractData(domSelectionRange, currentUrl)
   if (tabularData === undefined) {
     throw Error('Could not find tabular data.')
   }
 
   return normalizeTabularData(tabularData)
+}
+
+/**
+ * Try to extract data from the selection.
+ * @param  {DomSelectionRange} domSelectionRange - selection range.
+ * @param  {String} currentUrl - Current tab url.
+ * @return {TabularData|undefined} Tabular data.
+ */
+function extractData(domSelectionRange, currentUrl) {
+  var tabularData
+  try {
+    return tableExtractor.getTabularDataFromSelection(domSelectionRange)
+  } catch(any) {
+    console.log('Could not get tabular data with table extractor', any)
+  }
+
+  try {
+    return domExtractor.getTabularDataFromSelection(domSelectionRange)
+  } catch(any) {
+    console.log('Could not get tabular data with DOM extractor', any)
+  }
+  return undefined
 }
 
 /**
