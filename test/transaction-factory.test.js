@@ -10,7 +10,7 @@ describe('transaction-factory', () => {
   beforeEach(() => {    
     // This is necessary to avoid caching './column-finder', which would break the integration tests
     proxyquire.noPreserveCache()
-    columnFinder = td.object()
+    columnFinder = td.object(['getColumnInfoFromRow'])
     transactionFactory  = proxyquire('../src/scripts/ynab/transaction-factory', {
       './column-finder': columnFinder
     })
@@ -142,6 +142,39 @@ describe('transaction-factory', () => {
       expect(transactionFactory.createTransactions(tabularData, columnInfo)).to.eql([])
       td.verify(console.log(td.matchers.contains('Invalid row')))
       td.verify(console.log(td.matchers.contains('2nd try failed')))
+      td.reset()
+    })
+
+    it('should try to find column info if the provided donesnt work', () => {
+      // given:
+      let tabularData = {
+        data: [['', '31/01/2017', 'Payee 1', '12.3']]
+      }
+      let invalidColumnInfo = {
+        dateIndex: 0,
+        payeeIndex: 1,
+        inflowIndex: 2
+      }
+      td.replace(console, 'log')
+      td.when(columnFinder.getColumnInfoFromRow(tabularData.data[0]))
+        .thenReturn({
+        dateIndex: 1,
+        payeeIndex: 2,
+        inflowIndex: 3
+      })
+
+      // when:
+      let trxs = transactionFactory.createTransactions(tabularData, invalidColumnInfo)
+
+      // then:
+      expect(trxs).to.eql([{
+        date: '31/01/2017',
+        payee: 'Payee 1',
+        memo: '',
+        inflow: '12.30',
+        outflow: ''
+      }])
+      td.verify(console.log(td.matchers.contains('Invalid row')))
       td.reset()
     })
   })
