@@ -1,5 +1,7 @@
 import tableExtractor from './table-extractor'
 import domExtractor from './dom-extractor'
+import itauExtractor from './itau-extractor'
+
 /**
  * @typedef {TabularData} Table data.
  * @property {string[][]} data - Table data.
@@ -30,6 +32,11 @@ function getTabularDataFromSelection(domSelectionRange, currentUrl) {
  */
 function extractData(domSelectionRange, currentUrl) {
   var tabularData
+
+  if (itauExtractor.canHandleUrl(currentUrl)) {
+    return itauExtractor.getTabularDataFromSelection(domSelectionRange)
+  }
+
   try {
     return tableExtractor.getTabularDataFromSelection(domSelectionRange)
   } catch(any) {

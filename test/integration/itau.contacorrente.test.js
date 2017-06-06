@@ -4,16 +4,18 @@ import { expect } from 'chai'
 import proxyquire from 'proxyquire'
 import td from 'testdouble'
 
-xdescribe('[Integration] Itaú conta corrente', () => {
+describe('[Integration] Itaú conta corrente', () => {
   var downloadMock
   var displayErrorMessageMock
   var contentScript
+  var browserHelper
 
   beforeEach(() => {
     let htmlPath = path.join(__dirname, 'fixtures', 'itau.contacorrente.html')
     let html = fs.readFileSync(htmlPath, 'utf8')
     document.body.innerHTML = html
     downloadMock = td.object(['createTextFileForDownload'])
+    browserHelper = td.object(['getUrl'])
     displayErrorMessageMock = td.function('Display error')
 
     // subject:
@@ -24,7 +26,8 @@ xdescribe('[Integration] Itaú conta corrente', () => {
           sendMessage: displayErrorMessageMock
         }
       },
-      './utils/download': downloadMock
+      './utils/download': downloadMock,
+      './utils/browser-helper': browserHelper
     })
   })
 
@@ -40,6 +43,7 @@ xdescribe('[Integration] Itaú conta corrente', () => {
         focusNode: {parentElement: document.querySelector('#selectionEnd0')}
       }
     })
+    td.when(browserHelper.getUrl()).thenReturn('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll')
 
     // when:
     contentScript.ynabExportSelection()
