@@ -79,7 +79,8 @@
     "exclude": [
       "src/scripts/livereload.js",
       "src/scripts/utils/ext.js",
-      "src/scripts/utils/storage.js"
+      "src/scripts/utils/storage.js",
+      "src/scripts/utils/browser-helper.js"
     ],
     "require": [
       "babel-register"

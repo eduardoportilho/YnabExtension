@@ -9,6 +9,7 @@ import ext from './utils/ext'
 import selection from './utils/selection'
 import download from './utils/download'
 import ynabExporter from './ynab/exporter'
+import browserHelper from './utils/browser-helper'
 
 /**
  * Grab the selected elements, extract a YNAB csv out of it and put 
@@ -18,7 +19,7 @@ import ynabExporter from './ynab/exporter'
  */
 var ynabExportSelection = (selectionInfo) => {
   var selectedElements = selection.getSelectedElements(window)
-  var url = window.location.toString()
+  var url = browserHelper.getUrl()
   try {
     var ynabCsvString = ynabExporter.generateCsv(selectedElements, url)
     download.createTextFileForDownload(window, ynabCsvString, 'text/csv')

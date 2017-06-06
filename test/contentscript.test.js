@@ -9,6 +9,7 @@ describe("contentscript", () => {
   var download
   var ynabExporter
   var contentscript
+  var browserHelper
 
   beforeEach(() => {
     runtime_sendMessage = td.function()
@@ -16,11 +17,8 @@ describe("contentscript", () => {
     selection = td.object(['getSelectedElements'])
     download = td.object(['createTextFileForDownload'])
     ynabExporter = td.object(['generateCsv'])
-    td.replace(global, 'window', {
-      location: {
-        toString: () => 'test-url'
-      }
-    })
+    browserHelper = td.object(['getUrl'])
+    td.when(browserHelper.getUrl()).thenReturn('test-url')
 
     contentscript = proxyquire('../src/scripts/contentscript', {
       './utils/ext': {
@@ -31,7 +29,8 @@ describe("contentscript", () => {
       },
       './utils/selection': selection,
       './utils/download': download,
-      './ynab/exporter': ynabExporter
+      './ynab/exporter': ynabExporter,
+      './utils/browser-helper': browserHelper
     })
   })
 
