@@ -17,7 +17,7 @@ describe('base-extractor', function() {
     baseExtractor = proxyquire('../src/scripts/utils/data_extractors/base-extractor', {
       './table-extractor': tableExtractor,
       './dom-extractor': domExtractor,
-      './itau-extractor': itauExtractor
+      './itau-contacorrente-extractor': itauExtractor
     })
   })
 

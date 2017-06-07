@@ -1,6 +1,6 @@
 import tableExtractor from './table-extractor'
 import domExtractor from './dom-extractor'
-import itauExtractor from './itau-extractor'
+import itauExtractor from './itau-contacorrente-extractor'
 
 /**
  * @typedef {TabularData} Table data.

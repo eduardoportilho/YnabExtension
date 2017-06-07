@@ -1,5 +1,5 @@
 import {expect} from 'chai'
-import itauExtractor from '../src/scripts/utils/data_extractors/itau-extractor'
+import itauExtractor from '../src/scripts/utils/data_extractors/itau-contacorrente-extractor'
 
 describe("itau-extractor", () => {
   describe("getTabularDataFromSelection", () => {
