@@ -1,6 +1,12 @@
 import tableExtractor from './table-extractor'
 import domExtractor from './dom-extractor'
-import itauExtractor from './itau-contacorrente-extractor'
+import itauContaCorrenteExtractor from './itau-contacorrente-extractor'
+import itauCreditoExtractor from './itau-credito-extractor'
+
+const CUSTOM_EXTRACTORS = [
+  itauContaCorrenteExtractor,
+  itauCreditoExtractor
+]
 
 /**
  * @typedef {TabularData} Table data.
@@ -33,8 +39,12 @@ function getTabularDataFromSelection(domSelectionRange, currentUrl) {
 function extractData(domSelectionRange, currentUrl) {
   var tabularData
 
-  if (itauExtractor.canHandleUrl(currentUrl)) {
-    return itauExtractor.getTabularDataFromSelection(domSelectionRange)
+  for (let i = 0; i < CUSTOM_EXTRACTORS.length; i++) {
+    try {
+      if (CUSTOM_EXTRACTORS[i].canHandleUrl(currentUrl, domSelectionRange)) {
+        return CUSTOM_EXTRACTORS[i].getTabularDataFromSelection(domSelectionRange)
+      }
+    } catch(any) {}
   }
 
   try {

@@ -1,15 +1,28 @@
 import $ from "jquery"
+import JsTurbo from 'jsturbo'
 
 /**
- * Check if this extractor should be used based on the page URL.
+ * TODO: repeated, extract to common module
+ * Check if this extractor should be used based on the page URL and selection.
  * @param  {string} url.
+ * @param  {DomSelectionRange} domSelectionRange - selection range.
  * @return {boolean}
  */
-function canHandleUrl(url) {
-  return url.includes('itaubankline.itau.com.br')
+function canHandleUrl(url, domSelectionRange) {
+  try {
+    let firstRow = getContainingRow(domSelectionRange.start)
+    let lastRow = getContainingRow(domSelectionRange.end)
+    let firstRowColCount = firstRow.find('td').length
+    let lastRowColCount = lastRow.find('td').length
+    return url.includes('itaubankline.itau.com.br') && 
+      (firstRowColCount === 9 || lastRowColCount === 9)
+  } catch (any) {
+    return false
+  }
 }
 
 /**
+ * TODO: repeated, extract to common module
  * Extract tabular (rows and columns) from the selection.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
  * @return {TabularData} Tabular data.
@@ -17,11 +30,8 @@ function canHandleUrl(url) {
  */
 function getTabularDataFromSelection(domSelectionRange) {
   try {
-    let start = $(domSelectionRange.start)
-    let end = $(domSelectionRange.end)
-
-    let firstRow = start.closest('tr')
-    let lastRow = end.closest('tr')
+    let firstRow = getContainingRow(domSelectionRange.start)
+    let lastRow = getContainingRow(domSelectionRange.end)
 
     if(lastRow.index() < firstRow.index()) {
       let temp = lastRow
@@ -48,6 +58,7 @@ function getTabularDataFromSelection(domSelectionRange) {
     throw Error('Could not find tabular data.')
   }
 }
+
 /**
  * Extract tabular from a table row.
  * @param {jQuery} row - Table row.
@@ -59,6 +70,20 @@ function getTabularDataFromRow(row) {
   let value = row.find('td:nth-child(6)').text().trim()
   let signal = row.find('td:nth-child(7)').text().trim()
   return [date, payee, `${signal}${value}`]
+}
+
+/**
+ * TODO: repeated, extract to common module
+ * Get the row that contains the element or throw.
+ * @param  {[type]} el [description]
+ * @return {[type]}    [description]
+ */
+function getContainingRow(el) {
+    let row = $(el).closest('tr')
+    if (row.length <= 0) {
+      throw new Error('No containing row')
+    }
+    return row
 }
 
 module.exports = {
