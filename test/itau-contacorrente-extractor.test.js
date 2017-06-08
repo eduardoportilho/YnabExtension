@@ -2,7 +2,6 @@ import {expect} from 'chai'
 import itauExtractor from '../src/scripts/utils/data_extractors/itau-contacorrente-extractor'
 
 describe("itau-extractor", () => {
-  describe("getTabularDataFromSelection", () => {
     before(() => {
       document.body.innerHTML = `
         <table>
@@ -15,6 +14,7 @@ describe("itau-extractor", () => {
             <td>2.345,67</td>
             <td> </td>
             <td>ignore</td>
+            <td>ignore</td>
           </tr>
           <tr>
             <td>16/01/2017</td>
@@ -25,10 +25,13 @@ describe("itau-extractor", () => {
             <td>0,05</td>
             <td>-</td>
             <td>ignore</td>
+            <td>ignore</td>
           </tr>
         </table>
       `
     })
+
+  describe("getTabularDataFromSelection", () => {
 
     it("should get tabular data", () => {
       let domSelectionRange = {
@@ -71,10 +74,19 @@ describe("itau-extractor", () => {
 
   describe("canHandleUrl", () => {
     it("should handle itau-like url", () => {
-      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll')).to.be.true
+      let domSelectionRange = {
+        start: document.querySelector('#end'),
+        end: document.querySelector('#start')
+      }
+
+      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', domSelectionRange)).to.be.true
     })
     it("should reject non itau-like url", () => {
-      expect(itauExtractor.canHandleUrl('https://www.itau.com.br/personnalite/')).to.be.false
+      let domSelectionRange = {
+        start: document.querySelector('#end'),
+        end: document.querySelector('#start')
+      }
+      expect(itauExtractor.canHandleUrl('https://www.itau.com.br/personnalite/', domSelectionRange)).to.be.false
     })
   })
 })

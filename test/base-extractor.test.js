@@ -29,7 +29,7 @@ describe('base-extractor', function() {
     it('should use itau extractor if possible', function() {
       // // given
       let tableData = { data: [['itau-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url'))
+      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(true)
       td.when(itauExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenReturn(tableData)
@@ -44,7 +44,7 @@ describe('base-extractor', function() {
     it('should use tabular extractor if possible', function() {
       // // given
       let tableData = { data: [['table-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url'))
+      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenReturn(tableData)
@@ -59,7 +59,7 @@ describe('base-extractor', function() {
     it('should use DOM extractor if table extractor throws', function() {
       // given 
       let domData = { data: [['dom-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url'))
+      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenThrow(new Error('table extractor throws'))
@@ -76,7 +76,7 @@ describe('base-extractor', function() {
 
     it('should throw if both table and dom extractors thow', function() {
       // given
-      td.when(itauExtractor.canHandleUrl('test-url'))
+      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenThrow(new Error('table extractor throws'))
