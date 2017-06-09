@@ -1,10 +1,13 @@
 import {expect} from 'chai'
 import itauExtractor from '../src/scripts/utils/data_extractors/itau-contacorrente-extractor'
 
-describe("itau-extractor", () => {
+describe("itau-contacorrente-extractor", () => {
     before(() => {
       document.body.innerHTML = `
         <table>
+          <tr>
+            <td id="first-row-single-col">ignore</td>
+          </tr>
           <tr>
             <td>15/01/2017</td>
             <td id="start">ignore</td>
@@ -27,7 +30,11 @@ describe("itau-extractor", () => {
             <td>ignore</td>
             <td>ignore</td>
           </tr>
+          <tr>
+            <td id="last-row-single-col">ignore</td>
+          </tr>
         </table>
+        <div id="outside"></div>
       `
     })
 
@@ -78,9 +85,37 @@ describe("itau-extractor", () => {
         start: document.querySelector('#end'),
         end: document.querySelector('#start')
       }
-
       expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', domSelectionRange)).to.be.true
     })
+
+    it("should handle itau-like url if start row has 9 cols", () => {
+      let domSelectionRange = {
+        start: document.querySelector('#end'),
+        end: document.querySelector('#last-row-single-col')
+      }
+      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', domSelectionRange)).to.be.true
+    })
+
+    it("should handle itau-like url if end row has 9 cols", () => {
+      let domSelectionRange = {
+        start: document.querySelector('#first-row-single-col'),
+        end: document.querySelector('#start')
+      }
+      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', domSelectionRange)).to.be.true
+    })
+
+    it("should reject invalid selection", () => {
+      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', null)).to.be.false
+    })
+
+    it("should reject invalid selection", () => {
+      let domSelectionRange = {
+        start: document.querySelector('#outside'),
+        end: document.querySelector('#outside')
+      }
+      expect(itauExtractor.canHandleUrl('https://itaubankline.itau.com.br/GRIPNET/bklcom.dll', domSelectionRange)).to.be.false
+    })
+
     it("should reject non itau-like url", () => {
       let domSelectionRange = {
         start: document.querySelector('#end'),
