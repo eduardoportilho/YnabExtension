@@ -6,18 +6,21 @@ describe('base-extractor', function() {
   let baseExtractor
   let tableExtractor
   let domExtractor
-  let itauExtractor
+  let itauContaExtractor
+  let itauCreditoExtractor
 
   beforeEach(() => {
     // This is necessary to avoid caching './table-extractor' and './dom-extractor', which would break the integration tests
     proxyquire.noPreserveCache()
     tableExtractor = td.object(['getTabularDataFromSelection'])
     domExtractor = td.object(['getTabularDataFromSelection'])
-    itauExtractor = td.object(['canHandleUrl', 'getTabularDataFromSelection'])
+    itauContaExtractor = td.object(['canHandleUrl', 'getTabularDataFromSelection'])
+    itauCreditoExtractor = td.object(['canHandleUrl', 'getTabularDataFromSelection'])
     baseExtractor = proxyquire('../src/scripts/utils/data_extractors/base-extractor', {
       './table-extractor': tableExtractor,
       './dom-extractor': domExtractor,
-      './itau-contacorrente-extractor': itauExtractor
+      './itau-contacorrente-extractor': itauContaExtractor,
+      './itau-credito-extractor': itauCreditoExtractor
     })
   })
 
@@ -29,9 +32,9 @@ describe('base-extractor', function() {
     it('should use itau extractor if possible', function() {
       // // given
       let tableData = { data: [['itau-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
+      td.when(itauContaExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(true)
-      td.when(itauExtractor.getTabularDataFromSelection(td.matchers.anything()))
+      td.when(itauContaExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenReturn(tableData)
 
       // when
@@ -44,7 +47,9 @@ describe('base-extractor', function() {
     it('should use tabular extractor if possible', function() {
       // // given
       let tableData = { data: [['table-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
+      td.when(itauContaExtractor.canHandleUrl('test-url', td.matchers.anything()))
+        .thenReturn(false)
+      td.when(itauCreditoExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenReturn(tableData)
@@ -59,7 +64,9 @@ describe('base-extractor', function() {
     it('should use DOM extractor if table extractor throws', function() {
       // given 
       let domData = { data: [['dom-data']] }
-      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
+      td.when(itauContaExtractor.canHandleUrl('test-url', td.matchers.anything()))
+        .thenReturn(false)
+      td.when(itauCreditoExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenThrow(new Error('table extractor throws'))
@@ -76,7 +83,9 @@ describe('base-extractor', function() {
 
     it('should throw if both table and dom extractors thow', function() {
       // given
-      td.when(itauExtractor.canHandleUrl('test-url', td.matchers.anything()))
+      td.when(itauContaExtractor.canHandleUrl('test-url', td.matchers.anything()))
+        .thenReturn(false)
+      td.when(itauCreditoExtractor.canHandleUrl('test-url', td.matchers.anything()))
         .thenReturn(false)
       td.when(tableExtractor.getTabularDataFromSelection(td.matchers.anything()))
         .thenThrow(new Error('table extractor throws'))
