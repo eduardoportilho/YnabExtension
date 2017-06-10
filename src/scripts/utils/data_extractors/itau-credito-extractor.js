@@ -1,4 +1,5 @@
 import $ from "jquery"
+import domHelper from "../dom-helper"
 
 /**
  * TODO: repeated, extract to common module
@@ -9,8 +10,8 @@ import $ from "jquery"
  */
 function canHandleUrl(url, domSelectionRange) {
   try {
-    let firstRow = getContainingRow(domSelectionRange.start)
-    let lastRow = getContainingRow(domSelectionRange.end)
+    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
+    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
     let firstRowColCount = firstRow.find('td').length
     let lastRowColCount = lastRow.find('td').length
     return url.includes('itaubankline.itau.com.br') && 
@@ -29,11 +30,8 @@ function canHandleUrl(url, domSelectionRange) {
  */
 function getTabularDataFromSelection(domSelectionRange) {
   try {
-    let start = $(domSelectionRange.start)
-    let end = $(domSelectionRange.end)
-
-    let firstRow = start.closest('tr')
-    let lastRow = end.closest('tr')
+    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
+    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
 
     if(lastRow.index() < firstRow.index()) {
       let temp = lastRow
@@ -71,20 +69,6 @@ function getTabularDataFromRow(row) {
   let payee = row.find('td:nth-child(2)').text().trim()
   let value = row.find('td:nth-child(3)').text().trim()
   return [date, payee, value]
-}
-
-/**
- * TODO: repeated, extract to common module
- * Get the row that contains the element or throw.
- * @param  {[type]} el [description]
- * @return {[type]}    [description]
- */
-function getContainingRow(el) {
-    let row = $(el).closest('tr')
-    if (row.length <= 0) {
-      throw new Error('No containing row')
-    }
-    return row
 }
 
 module.exports = {

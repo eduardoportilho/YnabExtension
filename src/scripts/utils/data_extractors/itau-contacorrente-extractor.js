@@ -1,5 +1,6 @@
 import $ from "jquery"
 import JsTurbo from 'jsturbo'
+import domHelper from "../dom-helper"
 
 /**
  * TODO: repeated, extract to common module
@@ -10,8 +11,8 @@ import JsTurbo from 'jsturbo'
  */
 function canHandleUrl(url, domSelectionRange) {
   try {
-    let firstRow = getContainingRow(domSelectionRange.start)
-    let lastRow = getContainingRow(domSelectionRange.end)
+    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
+    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
     let firstRowColCount = firstRow.find('td').length
     let lastRowColCount = lastRow.find('td').length
     return url.includes('itaubankline.itau.com.br') && 
@@ -30,8 +31,8 @@ function canHandleUrl(url, domSelectionRange) {
  */
 function getTabularDataFromSelection(domSelectionRange) {
   try {
-    let firstRow = getContainingRow(domSelectionRange.start)
-    let lastRow = getContainingRow(domSelectionRange.end)
+    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
+    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
 
     if(lastRow.index() < firstRow.index()) {
       let temp = lastRow
@@ -70,20 +71,6 @@ function getTabularDataFromRow(row) {
   let value = row.find('td:nth-child(6)').text().trim()
   let signal = row.find('td:nth-child(7)').text().trim()
   return [date, payee, `${signal}${value}`]
-}
-
-/**
- * TODO: repeated, extract to common module
- * Get the row that contains the element or throw.
- * @param  {[type]} el [description]
- * @return {[type]}    [description]
- */
-function getContainingRow(el) {
-    let row = $(el).closest('tr')
-    if (row.length <= 0) {
-      throw new Error('No containing row')
-    }
-    return row
 }
 
 module.exports = {
