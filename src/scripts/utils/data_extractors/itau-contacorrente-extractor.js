@@ -3,7 +3,6 @@ import JsTurbo from 'jsturbo'
 import domHelper from "../dom-helper"
 
 /**
- * TODO: repeated, extract to common module
  * Check if this extractor should be used based on the page URL and selection.
  * @param  {string} url.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
@@ -11,10 +10,8 @@ import domHelper from "../dom-helper"
  */
 function canHandleUrl(url, domSelectionRange) {
   try {
-    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
-    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
-    let firstRowColCount = firstRow.find('td').length
-    let lastRowColCount = lastRow.find('td').length
+    let firstRowColCount = domHelper.getColumnCount(domSelectionRange.start)
+    let lastRowColCount = domHelper.getColumnCount(domSelectionRange.end)
     return url.includes('itaubankline.itau.com.br') && 
       (firstRowColCount === 9 || lastRowColCount === 9)
   } catch (any) {

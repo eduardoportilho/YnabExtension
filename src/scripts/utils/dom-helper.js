@@ -39,7 +39,18 @@ function getSiblingsRange(start, end) {
     return range
 }
 
+/**
+ * Get the number of tds in the tr containing the provided element.
+ * @param  {Element} elementInRow - Any element inside the row.
+ * @return {number} Number of columns.
+ */
+function getColumnCount(elementInRow) {
+    let row = getContainerElement(elementInRow, 'tr')
+    return row.find('td').length
+}
+
 module.exports = {
   getContainerElement: getContainerElement,
-  getSiblingsRange: getSiblingsRange
+  getSiblingsRange: getSiblingsRange,
+  getColumnCount: getColumnCount
 }

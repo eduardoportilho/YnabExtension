@@ -2,7 +2,6 @@ import $ from "jquery"
 import domHelper from "../dom-helper"
 
 /**
- * TODO: repeated, extract to common module
  * Check if this extractor should be used based on the page URL and selection.
  * @param  {string} url.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
@@ -10,10 +9,8 @@ import domHelper from "../dom-helper"
  */
 function canHandleUrl(url, domSelectionRange) {
   try {
-    let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
-    let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
-    let firstRowColCount = firstRow.find('td').length
-    let lastRowColCount = lastRow.find('td').length
+    let firstRowColCount = domHelper.getColumnCount(domSelectionRange.start)
+    let lastRowColCount = domHelper.getColumnCount(domSelectionRange.end)
     return url.includes('itaubankline.itau.com.br') && 
       (firstRowColCount === 3 || lastRowColCount === 3)
   } catch (any) {
@@ -22,7 +19,6 @@ function canHandleUrl(url, domSelectionRange) {
 }
 
 /**
- * TODO: repeated, extract to common module
  * Extract tabular (rows and columns) from the selection.
  * @param  {DomSelectionRange} domSelectionRange - selection range.
  * @return {TabularData} Tabular data.
@@ -32,24 +28,8 @@ function getTabularDataFromSelection(domSelectionRange) {
   try {
     let firstRow = domHelper.getContainerElement(domSelectionRange.start, 'tr')
     let lastRow = domHelper.getContainerElement(domSelectionRange.end, 'tr')
-
-    if(lastRow.index() < firstRow.index()) {
-      let temp = lastRow
-      lastRow = firstRow
-      firstRow = temp
-    }
-
-    let lastRowEl = lastRow.get(0)
-    let tabularData = []
-    let row = firstRow
-    while(row && row.get(0)) {
-      tabularData.push(getTabularDataFromRow(row))
-      if(row.get(0) === lastRowEl) {
-        break
-      }
-      row = row.next()
-    }
-
+    let rowRange = domHelper.getSiblingsRange(firstRow, lastRow)
+    let tabularData = rowRange.map(getTabularDataFromRow)
     return {
       header: ['date', 'payee', 'value'],
       data: tabularData
